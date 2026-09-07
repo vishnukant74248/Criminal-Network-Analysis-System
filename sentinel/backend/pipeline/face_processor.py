@@ -116,10 +116,18 @@ class FaceProcessor:
         try:
             # Standardize crop to 64x128 for normalized biometric feature extraction
             std_crop = cv2.resize(crop, (64, 128), interpolation=cv2.INTER_AREA)
-            gray = cv2.cvtColor(std_crop, cv2.COLOR_BGR2GRAY)
             
-            # 1. Spatial Block Histograms (32 spatial blocks, 16 bins = 512 dimensions)
-            # This precisely identifies individual appearance, facial structure, skin tone, and clothing
+            # Illumination normalization: apply Contrast Limited Adaptive Histogram Equalization (CLAHE)
+            # to the luminance channel so shadows, webcam auto-exposure, and room lighting shifts
+            # do not degrade biometric matching accuracy.
+            ycrcb = cv2.cvtColor(std_crop, cv2.COLOR_BGR2YCrCb)
+            clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+            ycrcb[:, :, 0] = clahe.apply(ycrcb[:, :, 0])
+            norm_bgr = cv2.cvtColor(ycrcb, cv2.COLOR_YCrCb2BGR)
+            gray = cv2.cvtColor(norm_bgr, cv2.COLOR_BGR2GRAY)
+
+            # 1. Spatial Block Contrast Histograms (32 spatial blocks, 16 bins = 512 dimensions)
+            # Discriminates facial features, skin tone, hairstyle, and upper-body contours
             bh, bw = 16, 16
             blocks = []
             for y in range(0, 128, bh):
@@ -131,19 +139,28 @@ class FaceProcessor:
             block_feat = np.concatenate(blocks).astype(np.float32)
             block_feat /= (np.linalg.norm(block_feat) + 1e-6)
 
-            # 2. 3D HSV Color Distribution (12 H x 4 S x 4 V = 192 bins)
-            hsv = cv2.cvtColor(std_crop, cv2.COLOR_BGR2HSV)
-            hsv_hist = cv2.calcHist([hsv], [0, 1, 2], None, [12, 4, 4], [0, 180, 0, 256, 0, 256]).flatten()
-            hsv_hist = hsv_hist / (np.sum(hsv_hist) + 1e-6)
-            hsv_hist /= (np.linalg.norm(hsv_hist) + 1e-6)
+            # 2. 2D Hue-Saturation Chrominance Distribution (16 H x 8 S = 128 bins)
+            # Invariant to overall illumination brightness V, purely captures skin and clothing chrominance
+            hsv = cv2.cvtColor(norm_bgr, cv2.COLOR_BGR2HSV)
+            hs_hist = cv2.calcHist([hsv], [0, 1], None, [16, 8], [0, 180, 0, 256]).flatten()
+            hs_hist = hs_hist / (np.sum(hs_hist) + 1e-6)
+            hs_hist /= (np.linalg.norm(hs_hist) + 1e-6)
 
-            # 3. Zero-Mean Normalized Spatial Texture Vector (16x32 = 512 dimensions)
+            # 3. Structural Edge Gradients (Sobel magnitude - 16x32 = 512 dimensions)
+            # Invariant to linear illumination shifts, captures facial contour geometry & silhouette
+            gx = cv2.Sobel(gray, cv2.CV_32F, 1, 0, ksize=3)
+            gy = cv2.Sobel(gray, cv2.CV_32F, 0, 1, ksize=3)
+            mag, _ = cv2.cartToPolar(gx, gy)
+            mag_resized = cv2.resize(mag, (16, 32), interpolation=cv2.INTER_AREA).flatten()
+            mag_feat = mag_resized / (np.linalg.norm(mag_resized) + 1e-6)
+
+            # 4. Zero-Mean Normalized Spatial Texture Vector (16x32 = 512 dimensions)
             struct = cv2.resize(gray, (16, 32), interpolation=cv2.INTER_AREA).astype(np.float32)
             struct = (struct - np.mean(struct)) / (np.std(struct) + 1e-5)
             struct_feat = struct.flatten() / (np.linalg.norm(struct) + 1e-6)
 
-            # Combined Biometric Signature (1216 dimensions)
-            combined = np.concatenate([block_feat * 1.5, hsv_hist * 1.2, struct_feat * 1.0]).astype(np.float32)
+            # Combined Biometric Signature (1664 dimensions)
+            combined = np.concatenate([block_feat * 1.2, hs_hist * 1.5, mag_feat * 1.0, struct_feat * 1.0]).astype(np.float32)
             norm = np.linalg.norm(combined)
             return combined / norm if norm > 0 else combined
         except Exception as e:

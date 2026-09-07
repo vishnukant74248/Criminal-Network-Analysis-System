@@ -18,7 +18,7 @@ import {
   Zap,
   Info
 } from 'lucide-react';
-import { getFullGraph, expandNode, oneClickExpand, getShortestPath, getCommunities } from '../../lib/api';
+import { getFullGraph, expandNode, oneClickExpand, getShortestPath, getCommunities, loadSampleData } from '../../lib/api';
 import { GraphData, AnyNode } from '../../types';
 
 export const GraphExplorer: React.FC = () => {
@@ -240,13 +240,28 @@ export const GraphExplorer: React.FC = () => {
         });
       } else if ((data as any)?.error) {
         setError((data as any).error);
-      } else if (!data || !data.nodes || data.nodes.length === 0) {
-        setError('No criminal network nodes found in graph repository.');
+      } else {
+        if (cyRef.current) {
+          cyRef.current.elements().remove();
+        }
       }
     } catch (err: any) {
       console.error('Failed to load graph:', err);
       setError(err?.message || 'Failed to establish connection to graph database.');
     } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRestoreSample = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      await loadSampleData();
+      await loadGraph();
+    } catch (err: any) {
+      console.error('Failed to restore sample data:', err);
+      setError('Could not load sample intelligence: ' + (err?.message || 'Unknown error'));
       setLoading(false);
     }
   };
@@ -578,6 +593,14 @@ export const GraphExplorer: React.FC = () => {
             >
               <RefreshCw className="w-4 h-4" />
             </button>
+            <button
+              onClick={handleRestoreSample}
+              className="px-2.5 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 border border-sky-200 text-xs font-mono text-sky-700 flex items-center space-x-1.5 transition shadow-2xs active:scale-95 cursor-pointer font-bold"
+              title="Restore / Reload 372-Node Tactical Intelligence Network"
+            >
+              <Zap className="w-3.5 h-3.5 text-amber-500" />
+              <span className="hidden md:inline">Restore 372-Node Graph</span>
+            </button>
           </div>
 
           <div className="hidden sm:flex items-center space-x-1 border-l border-slate-200 pl-2 font-mono">
@@ -632,23 +655,50 @@ export const GraphExplorer: React.FC = () => {
             <p className="text-xs text-slate-500 max-w-md font-mono">
               {error}
             </p>
-            <button
-              onClick={loadGraph}
-              className="px-4 py-2 rounded-lg bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold font-mono text-xs transition shadow-xs hover:shadow-md active:scale-95 cursor-pointer"
-            >
-              Retry Graph Ingestion
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={loadGraph}
+                className="px-4 py-2 rounded-lg bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold font-mono text-xs transition shadow-xs hover:shadow-md active:scale-95 cursor-pointer"
+              >
+                Retry Graph Ingestion
+              </button>
+              <button
+                onClick={handleRestoreSample}
+                className="px-4 py-2 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold font-mono text-xs transition shadow-2xs hover:shadow-xs active:scale-95 cursor-pointer"
+              >
+                Restore Sample Dataset
+              </button>
+            </div>
           </div>
         )}
 
         {/* Empty State Overlay */}
-        {!loading && !error && (!graphData || graphData.nodes.length === 0) && (
-          <div className="absolute inset-0 z-20 bg-white/95 flex flex-col items-center justify-center p-6 text-center space-y-3 animate-fade-in">
-            <Share2 className="w-10 h-10 text-slate-400" />
-            <div className="text-sm font-bold text-slate-900 font-mono">No Graph Entities Available</div>
-            <p className="text-xs text-slate-500 max-w-sm font-mono">
-              Please ingest FIRs, CDR files, or bank transactions in the Ingestion Center to generate the entity relationship graph.
-            </p>
+        {!loading && !error && (!graphData || !graphData.nodes || graphData.nodes.length === 0) && (
+          <div className="absolute inset-0 z-20 bg-white/95 flex flex-col items-center justify-center p-6 text-center space-y-4 animate-fade-in">
+            <div className="p-3.5 rounded-full bg-sky-50 border border-sky-200 text-sky-600 shadow-2xs">
+              <Share2 className="w-8 h-8" />
+            </div>
+            <div>
+              <div className="text-base font-bold text-slate-900 font-mono">No Graph Entities Loaded</div>
+              <p className="text-xs text-slate-500 max-w-md font-mono mt-1">
+                The criminal network graph repository is clean. You can instantly restore the full 372-node tactical intelligence dataset or ingest new case evidence.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+              <button
+                onClick={handleRestoreSample}
+                className="px-4 py-2 rounded-lg bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold font-mono text-xs transition shadow-xs hover:shadow-md active:scale-95 cursor-pointer flex items-center space-x-2"
+              >
+                <Zap className="w-4 h-4 text-amber-300" />
+                <span>Load 372-Node Tactical Network</span>
+              </button>
+              <a
+                href="/ingest"
+                className="px-4 py-2 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold font-mono text-xs transition shadow-2xs hover:shadow-xs active:scale-95 cursor-pointer"
+              >
+                Ingest New Case Evidence
+              </a>
+            </div>
           </div>
         )}
 

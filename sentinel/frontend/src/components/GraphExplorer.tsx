@@ -1,7 +1,9 @@
+export { GraphExplorer as default, GraphExplorer } from './graph/GraphExplorer';
+
 import React, { useEffect, useRef, useState } from 'react';
 import { Search, Filter, Layers, ZoomIn, ZoomOut, Maximize, Share2, Download, Info, Network } from 'lucide-react';
 
-export default function GraphExplorer() {
+function GraphExplorer() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [panelOpen, setPanelOpen] = useState(false);
 

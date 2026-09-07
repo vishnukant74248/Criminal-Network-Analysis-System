@@ -19,8 +19,8 @@ os.makedirs(EXPORTS_DIR, exist_ok=True)
 os.makedirs(TEST_DOCS_DIR, exist_ok=True)
 os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
 
-# Data Initialization Flag: default False (clean slate for real data)
-LOAD_SAMPLE_DATA = os.environ.get("LOAD_SAMPLE_DATA", "false").lower() == "true"
+# Data Initialization Flag: default True (auto-load 372-node tactical intelligence graph)
+LOAD_SAMPLE_DATA = os.environ.get("LOAD_SAMPLE_DATA", "true").lower() == "true"
 
 # Security & Tokens
 SECRET_KEY = os.environ.get("SENTINEL_SECRET_KEY", "SENTINEL_CYBER_MHA_OFFLINE_SECRET_2026")

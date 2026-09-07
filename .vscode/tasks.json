@@ -1,0 +1,33 @@
+﻿{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start SENTINEL (Backend + Frontend)",
+      "type": "shell",
+      "command": ".\\sentinel\\start_sentinel.bat",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Start Backend (FastAPI)",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}/sentinel/backend"
+      },
+      "command": ".\\.venv\\Scripts\\python.exe -m uvicorn main:app --host 127.0.0.1 --port 8000",
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Frontend (Vite React)",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}/sentinel/frontend"
+      },
+      "command": "npm run dev",
+      "problemMatcher": []
+    }
+  ]
+}

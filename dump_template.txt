@@ -1,0 +1,123 @@
+=== SLIDE 1 ===
+--- Shape 0: name=Rectangle 24, type=AUTO_SHAPE (1) ---
+
+--- Shape 1: name=Freeform: Shape 26, type=FREEFORM (5) ---
+
+--- Shape 2: name=Picture 4, type=PICTURE (13) ---
+--- Shape 3: name=Subtitle 3, type=PLACEHOLDER (14) ---
+
+TITLE PAGE
+--- Shape 4: name=Title 7, type=PLACEHOLDER (14) ---
+SMART INDIA HACKATHON 2025
+--- Shape 5: name=TextBox 9, type=TEXT_BOX (17) ---
+
+Problem Statement ID –
+Problem Statement Title-
+Theme-
+PS Category- Software/Hardware
+Team ID-
+Team Name (Registered on portal)
+--- Shape 6: name=Picture 2, type=PICTURE (13) ---
+=== SLIDE 2 ===
+--- Shape 0: name=Rectangle 8, type=AUTO_SHAPE (1) ---
+
+--- Shape 1: name=Title 1, type=PLACEHOLDER (14) ---
+IDEA TITLE
+--- Shape 2: name=TextBox 8, type=TEXT_BOX (17) ---
+Proposed Solution (Describe your Idea/Solution/Prototype)
+
+
+Detailed explanation of the proposed solution
+ How it addresses the problem
+Innovation and uniqueness of the solution 
+--- Shape 3: name=Slide Number Placeholder 5, type=PLACEHOLDER (14) ---
+2
+--- Shape 4: name=Footer Placeholder 6, type=PLACEHOLDER (14) ---
+@SIH Idea submission- Template
+--- Shape 5: name=Oval 9, type=AUTO_SHAPE (1) ---
+Your Team Name
+--- Shape 6: name=Picture 2, type=PICTURE (13) ---
+=== SLIDE 3 ===
+--- Shape 0: name=Rectangle 9, type=AUTO_SHAPE (1) ---
+
+--- Shape 1: name=Title 1, type=PLACEHOLDER (14) ---
+TECHNICAL APPROACH
+--- Shape 2: name=TextBox 8, type=TEXT_BOX (17) ---
+Technologies to be used (e.g. programming languages, frameworks, hardware)
+Methodology and process for implementation (Flow Charts/Images/ working prototype)
+--- Shape 3: name=Slide Number Placeholder 5, type=PLACEHOLDER (14) ---
+3
+--- Shape 4: name=Footer Placeholder 6, type=PLACEHOLDER (14) ---
+@SIH Idea submission- Template
+--- Shape 5: name=Oval 10, type=AUTO_SHAPE (1) ---
+Your Team Name
+--- Shape 6: name=Picture 2, type=PICTURE (13) ---
+=== SLIDE 4 ===
+--- Shape 0: name=Rectangle 9, type=AUTO_SHAPE (1) ---
+
+--- Shape 1: name=Title 1, type=PLACEHOLDER (14) ---
+FEASIBILITY AND VIABILITY
+--- Shape 2: name=TextBox 8, type=TEXT_BOX (17) ---
+Analysis of the feasibility of the idea
+Potential challenges and risks
+Strategies for overcoming these challenges
+--- Shape 3: name=Slide Number Placeholder 5, type=PLACEHOLDER (14) ---
+4
+--- Shape 4: name=Footer Placeholder 6, type=PLACEHOLDER (14) ---
+@SIH Idea submission- Template
+--- Shape 5: name=Oval 11, type=AUTO_SHAPE (1) ---
+Your Team Name
+--- Shape 6: name=Picture 2, type=PICTURE (13) ---
+=== SLIDE 5 ===
+--- Shape 0: name=Rectangle 9, type=AUTO_SHAPE (1) ---
+
+--- Shape 1: name=Title 1, type=PLACEHOLDER (14) ---
+IMPACT AND BENEFITS
+--- Shape 2: name=TextBox 8, type=TEXT_BOX (17) ---
+Potential impact on the target audience
+Benefits of the solution (social, economic, environmental, etc.)
+--- Shape 3: name=Slide Number Placeholder 5, type=PLACEHOLDER (14) ---
+5
+--- Shape 4: name=Footer Placeholder 6, type=PLACEHOLDER (14) ---
+@SIH Idea submission- Template
+--- Shape 5: name=Oval 11, type=AUTO_SHAPE (1) ---
+Your Team Name
+--- Shape 6: name=Picture 2, type=PICTURE (13) ---
+=== SLIDE 6 ===
+--- Shape 0: name=Rectangle 9, type=AUTO_SHAPE (1) ---
+
+--- Shape 1: name=Title 1, type=PLACEHOLDER (14) ---
+RESEARCH  AND REFERENCES
+--- Shape 2: name=TextBox 8, type=TEXT_BOX (17) ---
+Details / Links of the reference and research work
+--- Shape 3: name=Slide Number Placeholder 5, type=PLACEHOLDER (14) ---
+6
+--- Shape 4: name=Footer Placeholder 6, type=PLACEHOLDER (14) ---
+@SIH Idea submission- Template
+--- Shape 5: name=Oval 8, type=AUTO_SHAPE (1) ---
+Your Team Name
+--- Shape 6: name=Picture 2, type=PICTURE (13) ---
+=== SLIDE 7 ===
+--- Shape 0: name=Rectangle 9, type=AUTO_SHAPE (1) ---
+
+--- Shape 1: name=Slide Number Placeholder 5, type=PLACEHOLDER (14) ---
+7
+--- Shape 2: name=Footer Placeholder 6, type=PLACEHOLDER (14) ---
+@SIH Idea submission- Template
+--- Shape 3: name=Round Diagonal Corner Rectangle 2, type=AUTO_SHAPE (1) ---
+
+--- Shape 4: name=Google Shape;100;p3, type=TEXT_BOX (17) ---
+Kindly keep the maximum slides limit up to six (6). ( Including the title slide) 
+Try to avoid paragraphs and post your idea in points /diagrams / Infographics /pictures 
+Keep your explanation precise and easy to understand
+Idea should be unique and novel. 
+You can only use provided template for making the PPT without changing the idea details pointers (mentioned in previous slides).
+You need to save the file in PDF and upload the same on portal. No PPT, Word Doc or any other format will be supported.
+
+Note - You can delete this slide (Important Pointers) when you upload the details of your idea on SIH portal.
+
+--- Shape 5: name=TextBox 3, type=TEXT_BOX (17) ---
+IMPORTANT INSTRUCTIONS
+--- Shape 6: name=TextBox 4, type=TEXT_BOX (17) ---
+Please ensure below pointers are met while submitting the Idea PPT:
+--- Shape 7: name=Picture 2, type=PICTURE (13) ---

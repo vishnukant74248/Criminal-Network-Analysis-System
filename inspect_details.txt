@@ -1,0 +1,312 @@
+Slide dimensions: 12192000 x 6858000
+
+====================================================
+=== SLIDE 1 (shapes: 6) ===
+====================================================
+Shape 0: name=Hexagon 1, type=AUTO_SHAPE (1), left=5842000, top=889000, width=4826000, height=5080000
+Shape 1: name=Picture 2, type=PICTURE (13), left=7239000, top=1524000, width=3111500, height=3327400
+  PICTURE: filename=image.png, content_type=image/png, size=99692 bytes
+Shape 2: name=Picture 3, type=PICTURE (13), left=9753600, top=101600, width=2235200, height=982980
+  PICTURE: filename=image.png, content_type=image/png, size=182094 bytes
+Shape 3: name=TextBox 4, type=TEXT_BOX (17), left=444500, top=254000, width=9144000, height=635000
+  P0 [level=0]: SMART INDIA HACKATHON 2026
+     Runs: 'SMART INDIA HACKATHON 2026'(font=None, sz=None, b=None)
+Shape 4: name=TextBox 5, type=TEXT_BOX (17), left=444500, top=914400, width=9144000, height=571500
+  P0 [level=0]: TITLE PAGE
+     Runs: 'TITLE PAGE'(font=None, sz=None, b=None)
+Shape 5: name=TextBox 6, type=TEXT_BOX (17), left=444500, top=1714500, width=6350000, height=4826000
+  P0 [level=0]: • Problem Statement ID – 26189
+     Runs: '• '(font=Calibri, sz=18.0, b=True); 'Problem Statement ID – '(font=Calibri, sz=17.5, b=True); '26189'(font=Calibri, sz=17.5, b=True)
+  P1 [level=0]: • Problem Statement Title - AI-Powered Criminal Network Analysis System
+     Runs: '• '(font=Calibri, sz=18.0, b=True); 'Problem Statement Title - '(font=Calibri, sz=17.5, b=True); 'AI-Powered Criminal Network Analysis System'(font=Calibri, sz=17.5, b=False)
+  P2 [level=0]: • Theme - Blockchain & Cybersecurity
+     Runs: '• '(font=Calibri, sz=18.0, b=True); 'Theme - '(font=Calibri, sz=17.5, b=True); 'Blockchain & Cybersecurity'(font=Calibri, sz=17.5, b=True)
+  P3 [level=0]: • PS Category - Software
+     Runs: '• '(font=Calibri, sz=18.0, b=True); 'PS Category - '(font=Calibri, sz=17.5, b=True); 'Software'(font=Calibri, sz=17.5, b=True)
+  P4 [level=0]: • Team ID - SIH2026-ST-842
+     Runs: '• '(font=Calibri, sz=18.0, b=True); 'Team ID - '(font=Calibri, sz=17.5, b=True); 'SIH2026-ST-842'(font=Calibri, sz=17.5, b=True)
+  P5 [level=0]: • Team Name (Registered on portal) – Stryker
+     Runs: '• '(font=Calibri, sz=18.0, b=True); 'Team Name (Registered on portal) – '(font=Calibri, sz=17.5, b=True); 'Stryker'(font=Calibri, sz=17.5, b=True)
+====================================================
+=== SLIDE 2 (shapes: 10) ===
+====================================================
+Shape 0: name=Oval 1, type=AUTO_SHAPE (1), left=330200, top=252729, width=1252220, height=807720
+  P0 [level=0]: STRYKER
+     Runs: 'STRYKER'(font=None, sz=None, b=None)
+Shape 1: name=TextBox 2, type=TEXT_BOX (17), left=1905000, top=101600, width=8381999, height=825500
+  P0 [level=0]: IDEA TITLE
+     Runs: 'IDEA TITLE'(font=None, sz=None, b=None)
+Shape 2: name=Picture 3, type=PICTURE (13), left=9753600, top=101600, width=2235200, height=982980
+  PICTURE: filename=image.png, content_type=image/png, size=182094 bytes
+Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1), left=0, top=6355079, width=12192000, height=502920
+Shape 4: name=TextBox 5, type=TEXT_BOX (17), left=2540000, top=6400800, width=7112000, height=406400
+  P0 [level=0]: @SIH Idea submission- Template
+     Runs: '@SIH Idea submission- Template'(font=None, sz=None, b=None)
+Shape 5: name=TextBox 6, type=TEXT_BOX (17), left=10795000, top=6400800, width=1143000, height=406400
+  P0 [level=0]: 2
+     Runs: '2'(font=None, sz=None, b=None)
+Shape 6: name=Rounded Rectangle 7, type=AUTO_SHAPE (1), left=318770, top=1179830, width=5608320, height=4923790
+Shape 7: name=TextBox 8, type=TEXT_BOX (17), left=584200, top=1371600, width=5080000, height=4572000
+  P0 [level=0]: IDEA / SOLUTION :
+     Runs: 'IDEA / SOLUTION :'(font=None, sz=None, b=None)
+  P1 [level=0]: SENTINEL: AI-Powered Intelligence Platform for Real-Time Criminal Network Analysis & Crime Deterrence
+     Runs: 'SENTINEL: AI-Powered Intelligence Platform for Real-Time Criminal Network Analysis & Crime Deterrence'(font=None, sz=None, b=None)
+  P2 [level=0]: • Unified Knowledge Graph : Fuses police FIRs, phone call records (CDRs), bank accounts, and video feeds into one real-time network.
+     Runs: '• '(font=None, sz=11.0, b=True); 'Unified Knowledge Graph : '(font=Calibri, sz=11.0, b=True); 'Fuses police FIRs, phone call records (CDRs), bank accounts, and video feeds into one real-time network.'(font=Calibri, sz=10.0, b=None)
+  P3 [level=0]: • Kingpin & Boss Discovery : Graph centrality algorithms automatically uncover covert syndicate leaders hiding behind operatives.
+     Runs: '• '(font=None, sz=11.0, b=True); 'Kingpin & Boss Discovery : '(font=Calibri, sz=11.0, b=True); 'Graph centrality algorithms automatically uncover covert syndicate leaders hiding behind operatives.'(font=Calibri, sz=10.0, b=None)
+  P4 [level=0]: • Hawala & AML Detection : Detects 4-node circular money loops (<72h) and smurfing transfers below ₹50,000 threshold.
+     Runs: '• '(font=None, sz=11.0, b=True); 'Hawala & AML Detection : '(font=Calibri, sz=11.0, b=True); 'Detects 4-node circular money loops (<72h) and smurfing transfers below ₹50,000 threshold.'(font=Calibri, sz=10.0, b=None)
+  P5 [level=0]: • Burner Phone Triangulation : Tracks shared mobile handsets (IMEI reuse) and co-located nocturnal meetings (<500m).
+     Runs: '• '(font=None, sz=11.0, b=True); 'Burner Phone Triangulation : '(font=Calibri, sz=11.0, b=True); 'Tracks shared mobile handsets (IMEI reuse) and co-located nocturnal meetings (<500m).'(font=Calibri, sz=10.0, b=None)
+  P6 [level=0]: • Women Safety Edge AI : Live CCTV monitoring detects stalking and cornering with 1-click Dial 112 PCR dispatch.
+     Runs: '• '(font=None, sz=11.0, b=True); 'Women Safety Edge AI : '(font=Calibri, sz=11.0, b=True); 'Live CCTV monitoring detects stalking and cornering with 1-click Dial 112 PCR dispatch.'(font=Calibri, sz=10.0, b=None)
+  P7 [level=0]: • Statutory Evidence Vault : Cryptographic SHA-256 blockchain ledger ensuring 100% Section 63 BSA / 65B IEA court admissibility.
+     Runs: '• '(font=None, sz=11.0, b=True); 'Statutory Evidence Vault : '(font=Calibri, sz=11.0, b=True); 'Cryptographic SHA-256 blockchain ledger ensuring 100% Section 63 BSA / 65B IEA court admissibility.'(font=Calibri, sz=10.0, b=None)
+Shape 8: name=Rounded Rectangle 9, type=AUTO_SHAPE (1), left=6264910, top=1179830, width=5608320, height=4923790
+Shape 9: name=TextBox 10, type=TEXT_BOX (17), left=6553200, top=1371600, width=5080000, height=4572000
+  P0 [level=0]: PROBLEM RESOLUTION :
+     Runs: 'PROBLEM RESOLUTION :'(font=None, sz=None, b=None)
+  P1 [level=0]: ❖ Breaks Data Silos : 
+Police usually examine FIRs, phone logs, and bank statements in isolation. SENTINEL automatically merges fragmented clues into an interactive 360° map in seconds.
+     Runs: '❖ '(font=None, sz=12.0, b=True); 'Breaks Data Silos : 
+'(font=Calibri, sz=12.0, b=True); 'Police usually examine FIRs, phone logs, and bank statements in isolation. SENTINEL automatically merges fragmented clues into an interactive 360° map in seconds.'(font=Calibri, sz=10.5, b=None)
+  P2 [level=0]: ❖ Exposes Hidden Syndicate Bosses : 
+Crime kingpins rarely use their own phones. Advanced Betweenness Centrality and PageRank expose the mastermind brokers coordinating criminal activities.
+     Runs: '❖ '(font=None, sz=12.0, b=True); 'Exposes Hidden Syndicate Bosses : 
+'(font=Calibri, sz=12.0, b=True); 'Crime kingpins rarely use their own phones. Advanced Betweenness Centrality and PageRank expose the mastermind brokers coordinating criminal activities.'(font=Calibri, sz=10.5, b=None)
+  P3 [level=0]: ❖ Stops Crime in Real-Time : 
+Shifts law enforcement from slow post-crime investigation to proactive live deterrence—flagging threats and dispatching emergency PCR vans in < 4 minutes.
+     Runs: '❖ '(font=None, sz=12.0, b=True); 'Stops Crime in Real-Time : 
+'(font=Calibri, sz=12.0, b=True); 'Shifts law enforcement from slow post-crime investigation to proactive live deterrence—flagging threats and dispatching emergency PCR vans in < 4 minutes.'(font=Calibri, sz=10.5, b=None)
+  P4 [level=0]: ❖ Guarantees Court Convictions : 
+Digital evidence often fails in court due to broken chain of custody. SENTINEL creates Section 63 BSA certified PDF dossiers with SHA-256 blockchain verification.
+     Runs: '❖ '(font=None, sz=12.0, b=True); 'Guarantees Court Convictions : 
+'(font=Calibri, sz=12.0, b=True); 'Digital evidence often fails in court due to broken chain of custody. SENTINEL creates Section 63 BSA certified PDF dossiers with SHA-256 blockchain verification.'(font=Calibri, sz=10.5, b=None)
+====================================================
+=== SLIDE 3 (shapes: 7) ===
+====================================================
+Shape 0: name=Oval 1, type=AUTO_SHAPE (1), left=330200, top=252729, width=1252220, height=807720
+  P0 [level=0]: STRYKER
+     Runs: 'STRYKER'(font=None, sz=None, b=None)
+Shape 1: name=TextBox 2, type=TEXT_BOX (17), left=1905000, top=101600, width=8381999, height=825500
+  P0 [level=0]: TECHNICAL APPROACH
+     Runs: 'TECHNICAL APPROACH'(font=None, sz=None, b=None)
+Shape 2: name=Picture 3, type=PICTURE (13), left=9753600, top=101600, width=2235200, height=982980
+  PICTURE: filename=image.png, content_type=image/png, size=182094 bytes
+Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1), left=0, top=6355079, width=12192000, height=502920
+Shape 4: name=TextBox 5, type=TEXT_BOX (17), left=2540000, top=6400800, width=7112000, height=406400
+  P0 [level=0]: @SIH Idea submission- Template
+     Runs: '@SIH Idea submission- Template'(font=None, sz=None, b=None)
+Shape 5: name=TextBox 6, type=TEXT_BOX (17), left=10795000, top=6400800, width=1143000, height=406400
+  P0 [level=0]: 3
+     Runs: '3'(font=None, sz=None, b=None)
+Shape 6: name=Picture 7, type=PICTURE (13), left=571500, top=1206500, width=11049000, height=4889500
+  PICTURE: filename=image.png, content_type=image/png, size=262478 bytes
+====================================================
+=== SLIDE 4 (shapes: 7) ===
+====================================================
+Shape 0: name=Oval 1, type=AUTO_SHAPE (1), left=330200, top=252729, width=1252220, height=807720
+  P0 [level=0]: STRYKER
+     Runs: 'STRYKER'(font=None, sz=None, b=None)
+Shape 1: name=TextBox 2, type=TEXT_BOX (17), left=1905000, top=101600, width=8381999, height=825500
+  P0 [level=0]: TECHNICAL APPROACH
+     Runs: 'TECHNICAL APPROACH'(font=None, sz=None, b=None)
+Shape 2: name=Picture 3, type=PICTURE (13), left=9753600, top=101600, width=2235200, height=982980
+  PICTURE: filename=image.png, content_type=image/png, size=182094 bytes
+Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1), left=0, top=6355079, width=12192000, height=502920
+Shape 4: name=TextBox 5, type=TEXT_BOX (17), left=2540000, top=6400800, width=7112000, height=406400
+  P0 [level=0]: @SIH Idea submission- Template
+     Runs: '@SIH Idea submission- Template'(font=None, sz=None, b=None)
+Shape 5: name=TextBox 6, type=TEXT_BOX (17), left=10795000, top=6400800, width=1143000, height=406400
+  P0 [level=0]: 4
+     Runs: '4'(font=None, sz=None, b=None)
+Shape 6: name=Picture 7, type=PICTURE (13), left=571500, top=1206500, width=11049000, height=4889500
+  PICTURE: filename=image.png, content_type=image/png, size=265320 bytes
+====================================================
+=== SLIDE 5 (shapes: 7) ===
+====================================================
+Shape 0: name=Oval 1, type=AUTO_SHAPE (1), left=330200, top=252729, width=1252220, height=807720
+  P0 [level=0]: STRYKER
+     Runs: 'STRYKER'(font=None, sz=None, b=None)
+Shape 1: name=TextBox 2, type=TEXT_BOX (17), left=1905000, top=101600, width=8381999, height=825500
+  P0 [level=0]: TECHNICAL APPROACH
+     Runs: 'TECHNICAL APPROACH'(font=None, sz=None, b=None)
+Shape 2: name=Picture 3, type=PICTURE (13), left=9753600, top=101600, width=2235200, height=982980
+  PICTURE: filename=image.png, content_type=image/png, size=182094 bytes
+Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1), left=0, top=6355079, width=12192000, height=502920
+Shape 4: name=TextBox 5, type=TEXT_BOX (17), left=2540000, top=6400800, width=7112000, height=406400
+  P0 [level=0]: @SIH Idea submission- Template
+     Runs: '@SIH Idea submission- Template'(font=None, sz=None, b=None)
+Shape 5: name=TextBox 6, type=TEXT_BOX (17), left=10795000, top=6400800, width=1143000, height=406400
+  P0 [level=0]: 5
+     Runs: '5'(font=None, sz=None, b=None)
+Shape 6: name=Picture 7, type=PICTURE (13), left=698500, top=1206500, width=10795000, height=4889500
+  PICTURE: filename=image.png, content_type=image/png, size=277160 bytes
+====================================================
+=== SLIDE 6 (shapes: 9) ===
+====================================================
+Shape 0: name=Oval 1, type=AUTO_SHAPE (1), left=330200, top=252729, width=1252220, height=807720
+  P0 [level=0]: STRYKER
+     Runs: 'STRYKER'(font=None, sz=None, b=None)
+Shape 1: name=TextBox 2, type=TEXT_BOX (17), left=1905000, top=101600, width=8381999, height=825500
+  P0 [level=0]: TECH STACK
+     Runs: 'TECH STACK'(font=None, sz=None, b=None)
+Shape 2: name=Picture 3, type=PICTURE (13), left=9753600, top=101600, width=2235200, height=982980
+  PICTURE: filename=image.png, content_type=image/png, size=182094 bytes
+Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1), left=0, top=6355079, width=12192000, height=502920
+Shape 4: name=TextBox 5, type=TEXT_BOX (17), left=2540000, top=6400800, width=7112000, height=406400
+  P0 [level=0]: @SIH Idea submission- Template
+     Runs: '@SIH Idea submission- Template'(font=None, sz=None, b=None)
+Shape 5: name=TextBox 6, type=TEXT_BOX (17), left=10795000, top=6400800, width=1143000, height=406400
+  P0 [level=0]: 6
+     Runs: '6'(font=None, sz=None, b=None)
+Shape 6: name=Rounded Rectangle 7, type=AUTO_SHAPE (1), left=452120, top=1206500, width=5665470, height=4889500
+Shape 7: name=TextBox 8, type=TEXT_BOX (17), left=736600, top=1422400, width=5105400, height=4508500
+  P0 [level=0]: Frontend Dashboard :
+     Runs: 'Frontend Dashboard :'(font=None, sz=None, b=None)
+  P1 [level=0]: • React 19, TypeScript, Vite – High-performance responsive tactical UI built for police control room command.
+     Runs: '• '(font=None, sz=10.0, b=True); 'React 19, TypeScript, Vite – '(font=Calibri, sz=10.0, b=True); 'High-performance responsive tactical UI built for police control room command.'(font=Calibri, sz=9.5, b=None)
+  P2 [level=0]: • Tailwind CSS – Low-light dark tactical theme reducing officer eye fatigue.
+     Runs: '• '(font=None, sz=10.0, b=True); 'Tailwind CSS – '(font=Calibri, sz=10.0, b=True); 'Low-light dark tactical theme reducing officer eye fatigue.'(font=Calibri, sz=9.5, b=None)
+  P3 [level=0]: • Cytoscape.js & Leaflet.js – Interactive 2D/3D suspect graph networks and geo-spatial cell tower tracking.
+     Runs: '• '(font=None, sz=10.0, b=True); 'Cytoscape.js & Leaflet.js – '(font=Calibri, sz=10.0, b=True); 'Interactive 2D/3D suspect graph networks and geo-spatial cell tower tracking.'(font=Calibri, sz=9.5, b=None)
+  P4 [level=0]: Backend + Intelligence Core :
+     Runs: 'Backend + Intelligence Core :'(font=None, sz=None, b=None)
+  P5 [level=0]: • FastAPI (Python 3.12) – Ultra-fast asynchronous REST APIs with sub-millisecond query latency.
+     Runs: '• '(font=None, sz=10.0, b=True); 'FastAPI (Python 3.12) – '(font=Calibri, sz=10.0, b=True); 'Ultra-fast asynchronous REST APIs with sub-millisecond query latency.'(font=Calibri, sz=9.5, b=None)
+  P6 [level=0]: • NetworkX MultiDiGraph – In-memory graph engine managing 372 nodes, 869 edges and centrality metrics.
+     Runs: '• '(font=None, sz=10.0, b=True); 'NetworkX MultiDiGraph – '(font=Calibri, sz=10.0, b=True); 'In-memory graph engine managing 372 nodes, 869 edges and centrality metrics.'(font=Calibri, sz=9.5, b=None)
+  P7 [level=0]: • SQLite WAL + Blockchain Hash Chain – Thread-safe data storage with SHA-256 evidence sealing.
+     Runs: '• '(font=None, sz=10.0, b=True); 'SQLite WAL + Blockchain Hash Chain – '(font=Calibri, sz=10.0, b=True); 'Thread-safe data storage with SHA-256 evidence sealing.'(font=Calibri, sz=9.5, b=None)
+  P8 [level=0]: • YOLO & spaCy NLP – Real-time gender classification edge AI & automated FIR entity extraction.
+     Runs: '• '(font=None, sz=10.0, b=True); 'YOLO & spaCy NLP – '(font=Calibri, sz=10.0, b=True); 'Real-time gender classification edge AI & automated FIR entity extraction.'(font=Calibri, sz=9.5, b=None)
+  P9 [level=0]: Statutory Legal Vault :
+     Runs: 'Statutory Legal Vault :'(font=None, sz=None, b=None)
+  P10 [level=0]: • ReportLab Forensic Engine – Generates court-certified Section 63 BSA dossiers with QR code verification.
+     Runs: '• '(font=None, sz=10.0, b=True); 'ReportLab Forensic Engine – '(font=Calibri, sz=10.0, b=True); 'Generates court-certified Section 63 BSA dossiers with QR code verification.'(font=Calibri, sz=9.5, b=None)
+Shape 8: name=Picture 9, type=PICTURE (13), left=6286500, top=1206500, width=5524500, height=4889500
+  PICTURE: filename=image.png, content_type=image/png, size=97706 bytes
+====================================================
+=== SLIDE 7 (shapes: 12) ===
+====================================================
+Shape 0: name=Oval 1, type=AUTO_SHAPE (1), left=330200, top=252729, width=1252220, height=807720
+  P0 [level=0]: STRYKER
+     Runs: 'STRYKER'(font=None, sz=None, b=None)
+Shape 1: name=TextBox 2, type=TEXT_BOX (17), left=1905000, top=101600, width=8381999, height=825500
+  P0 [level=0]: FEASIBILITY AND VIABILITY
+     Runs: 'FEASIBILITY AND VIABILITY'(font=None, sz=None, b=None)
+Shape 2: name=Picture 3, type=PICTURE (13), left=9753600, top=101600, width=2235200, height=982980
+  PICTURE: filename=image.png, content_type=image/png, size=182094 bytes
+Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1), left=0, top=6355079, width=12192000, height=502920
+Shape 4: name=TextBox 5, type=TEXT_BOX (17), left=2540000, top=6400800, width=7112000, height=406400
+  P0 [level=0]: @SIH Idea submission- Template
+     Runs: '@SIH Idea submission- Template'(font=None, sz=None, b=None)
+Shape 5: name=TextBox 6, type=TEXT_BOX (17), left=10795000, top=6400800, width=1143000, height=406400
+  P0 [level=0]: 7
+     Runs: '7'(font=None, sz=None, b=None)
+Shape 6: name=Rounded Rectangle 7, type=AUTO_SHAPE (1), left=444500, top=1206500, width=5524500, height=4889500
+Shape 7: name=TextBox 8, type=TEXT_BOX (17), left=698500, top=1397000, width=5016500, height=4508500
+  P0 [level=0]: Technical Feasibility
+     Runs: 'Technical Feasibility'(font=None, sz=None, b=None)
+  P1 [level=0]: • Uses proven open-source frameworks – FastAPI, React 19, NetworkX
+     Runs: '• Uses proven open-source frameworks – FastAPI, React 19, NetworkX'(font=None, sz=None, b=None)
+  P2 [level=0]: • Direct compatibility with police CCTNS and telecom CDR exports
+     Runs: '• Direct compatibility with police CCTNS and telecom CDR exports'(font=None, sz=None, b=None)
+  P3 [level=0]: • Edge AI runs efficiently on existing workstation CPUs / GPUs
+     Runs: '• Edge AI runs efficiently on existing workstation CPUs / GPUs'(font=None, sz=None, b=None)
+  P4 [level=0]: • Cryptographic SHA-256 ledger ensures 100% zero-gas data integrity
+     Runs: '• Cryptographic SHA-256 ledger ensures 100% zero-gas data integrity'(font=None, sz=None, b=None)
+  P5 [level=0]: Economic Feasibility
+     Runs: 'Economic Feasibility'(font=None, sz=None, b=None)
+  P6 [level=0]: • Zero expensive software licenses or cloud vendor lock-in
+     Runs: '• Zero expensive software licenses or cloud vendor lock-in'(font=None, sz=None, b=None)
+  P7 [level=0]: • Directly leverages city CCTV cameras & standard police PC hardware
+     Runs: '• Directly leverages city CCTV cameras & standard police PC hardware'(font=None, sz=None, b=None)
+  P8 [level=0]: • Compresses weeks of manual investigative analysis into seconds
+     Runs: '• Compresses weeks of manual investigative analysis into seconds'(font=None, sz=None, b=None)
+  P9 [level=0]: • Drastically reduces police manpower costs during major syndicate probes
+     Runs: '• Drastically reduces police manpower costs during major syndicate probes'(font=None, sz=None, b=None)
+Shape 8: name=Rounded Rectangle 9, type=AUTO_SHAPE (1), left=6223000, top=1206500, width=5524500, height=1905000
+Shape 9: name=TextBox 10, type=TEXT_BOX (17), left=6477000, top=1333500, width=5016500, height=1651000
+  P0 [level=0]: “The solution is technically robust, low-cost, and operationally practical—enabling police to dismantle syndicates faster while protecting vulnerable citizens.”
+     Runs: '“The solution is technically robust, low-cost, and operationally practical—enabling police to dismantle syndicates faster while protecting vulnerable citizens.”'(font=None, sz=None, b=None)
+Shape 10: name=Rounded Rectangle 11, type=AUTO_SHAPE (1), left=6223000, top=3302000, width=5524500, height=2794000
+Shape 11: name=TextBox 12, type=TEXT_BOX (17), left=6477000, top=3454400, width=5016500, height=2476500
+  P0 [level=0]: Challenges & Strategies
+     Runs: 'Challenges & Strategies'(font=None, sz=None, b=None)
+  P1 [level=0]: • Unstructured Police Data – FIRs contain spelling mistakes, slang, and varied dialects. Solved via AI Named Entity Recognition + Jaro-Winkler fuzzy deduplication (>88%).
+     Runs: '• '(font=None, sz=None, b=True); 'Unstructured Police Data – '(font=Calibri, sz=10.5, b=True); 'FIRs contain spelling mistakes, slang, and varied dialects. '(font=None, sz=9.5, b=None); 'Solved via AI Named Entity Recognition + Jaro-Winkler fuzzy deduplication (>88%).'(font=None, sz=9.5, b=True)
+  P2 [level=0]: • Massive CDR & Financial Scale – Correlating millions of call records without lag. Solved via in-memory graph caching & SQLite WAL indexing for sub-millisecond lookups.
+     Runs: '• '(font=None, sz=None, b=True); 'Massive CDR & Financial Scale – '(font=Calibri, sz=10.5, b=True); 'Correlating millions of call records without lag. '(font=None, sz=9.5, b=None); 'Solved via in-memory graph caching & SQLite WAL indexing for sub-millisecond lookups.'(font=None, sz=9.5, b=True)
+====================================================
+=== SLIDE 8 (shapes: 10) ===
+====================================================
+Shape 0: name=Oval 1, type=AUTO_SHAPE (1), left=330200, top=252729, width=1252220, height=807720
+  P0 [level=0]: STRYKER
+     Runs: 'STRYKER'(font=None, sz=None, b=None)
+Shape 1: name=TextBox 2, type=TEXT_BOX (17), left=1905000, top=101600, width=8381999, height=825500
+  P0 [level=0]: IMPACT AND BENEFITS
+     Runs: 'IMPACT AND BENEFITS'(font=None, sz=None, b=None)
+Shape 2: name=Picture 3, type=PICTURE (13), left=9753600, top=101600, width=2235200, height=982980
+  PICTURE: filename=image.png, content_type=image/png, size=182094 bytes
+Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1), left=0, top=6355079, width=12192000, height=502920
+Shape 4: name=TextBox 5, type=TEXT_BOX (17), left=2540000, top=6400800, width=7112000, height=406400
+  P0 [level=0]: @SIH Idea submission- Template
+     Runs: '@SIH Idea submission- Template'(font=None, sz=None, b=None)
+Shape 5: name=TextBox 6, type=TEXT_BOX (17), left=10795000, top=6400800, width=1143000, height=406400
+  P0 [level=0]: 8
+     Runs: '8'(font=None, sz=None, b=None)
+Shape 6: name=Rounded Rectangle 7, type=AUTO_SHAPE (1), left=444500, top=1206500, width=6667500, height=4889500
+Shape 7: name=TextBox 8, type=TEXT_BOX (17), left=736600, top=1397000, width=6096000, height=4508500
+  P0 [level=0]: Law Enforcement & Police Officers
+     Runs: 'Law Enforcement & Police Officers'(font=None, sz=None, b=None)
+  P1 [level=0]: • 1-click network expansion reveals 2-hop associates, burner phones, and money trails.
+     Runs: '• 1-click network expansion reveals 2-hop associates, burner phones, and money trails.'(font=None, sz=None, b=None)
+  P2 [level=0]: • Automatically identifies shadow kingpins who never make direct phone calls.
+     Runs: '• Automatically identifies shadow kingpins who never make direct phone calls.'(font=None, sz=None, b=None)
+  P3 [level=0]: • Collaborative case board eliminates inter-departmental communication delays.
+     Runs: '• Collaborative case board eliminates inter-departmental communication delays.'(font=None, sz=None, b=None)
+  P4 [level=0]: Women & Vulnerable Citizens
+     Runs: 'Women & Vulnerable Citizens'(font=None, sz=None, b=None)
+  P5 [level=0]: • Autonomous CCTV monitoring detects stalking, cornering, and distress in deserted transit zones.
+     Runs: '• Autonomous CCTV monitoring detects stalking, cornering, and distress in deserted transit zones.'(font=None, sz=None, b=None)
+  P6 [level=0]: • 1-click Dial 112 PCR dispatch sends emergency patrol units within 3.5 minutes.
+     Runs: '• 1-click Dial 112 PCR dispatch sends emergency patrol units within 3.5 minutes.'(font=None, sz=None, b=None)
+  P7 [level=0]: • Proactive crime deterrence prevents harassment before physical harm occurs.
+     Runs: '• Proactive crime deterrence prevents harassment before physical harm occurs.'(font=None, sz=None, b=None)
+  P8 [level=0]: Judiciary & Legal Prosecution
+     Runs: 'Judiciary & Legal Prosecution'(font=None, sz=None, b=None)
+  P9 [level=0]: • 100% tamper-evident digital evidence meeting Section 63 BSA / 65B IEA standards.
+     Runs: '• 100% tamper-evident digital evidence meeting Section 63 BSA / 65B IEA standards.'(font=None, sz=None, b=None)
+  P10 [level=0]: • Court-ready forensic PDF dossiers accelerate trials and eliminate chargesheet delays.
+     Runs: '• Court-ready forensic PDF dossiers accelerate trials and eliminate chargesheet delays.'(font=None, sz=None, b=None)
+Shape 8: name=Rounded Rectangle 9, type=AUTO_SHAPE (1), left=7366000, top=1841500, width=4381500, height=3175000
+Shape 9: name=TextBox 10, type=TEXT_BOX (17), left=7620000, top=1968500, width=3873499, height=2921000
+  P0 [level=0]: “SENTINEL transforms fragmented crime records into real-time operational clarity—protecting vulnerable citizens, disrupting criminal syndicates, and accelerating the delivery of justice.”
+     Runs: '“SENTINEL transforms fragmented crime records into real-time operational clarity—protecting vulnerable citizens, disrupting criminal syndicates, and accelerating the delivery of justice.”'(font=None, sz=None, b=None)
+====================================================
+=== SLIDE 9 (shapes: 7) ===
+====================================================
+Shape 0: name=Oval 1, type=AUTO_SHAPE (1), left=330200, top=252729, width=1252220, height=807720
+  P0 [level=0]: STRYKER
+     Runs: 'STRYKER'(font=None, sz=None, b=None)
+Shape 1: name=TextBox 2, type=TEXT_BOX (17), left=1905000, top=101600, width=8381999, height=825500
+Shape 2: name=Picture 3, type=PICTURE (13), left=9753600, top=101600, width=2235200, height=982980
+  PICTURE: filename=image.png, content_type=image/png, size=182094 bytes
+Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1), left=0, top=6355079, width=12192000, height=502920
+Shape 4: name=TextBox 5, type=TEXT_BOX (17), left=2540000, top=6400800, width=7112000, height=406400
+  P0 [level=0]: @SIH Idea submission- Template
+     Runs: '@SIH Idea submission- Template'(font=None, sz=None, b=None)
+Shape 5: name=TextBox 6, type=TEXT_BOX (17), left=10795000, top=6400800, width=1143000, height=406400
+  P0 [level=0]: 9
+     Runs: '9'(font=None, sz=None, b=None)
+Shape 6: name=TextBox 7, type=TEXT_BOX (17), left=1270000, top=1905000, width=9652000, height=3175000
+  P0 [level=0]: THANK YOU
+     Runs: 'THANK YOU'(font=None, sz=None, b=None)
+  P1 [level=0]: SENTINEL v2.0 – AI-Powered Criminal Network Analysis System
+     Runs: 'SENTINEL v2.0 – AI-Powered Criminal Network Analysis System'(font=None, sz=None, b=None)
+  P2 [level=0]: Team Stryker • Problem Statement ID: 26189
+     Runs: 'Team Stryker • Problem Statement ID: 26189'(font=None, sz=None, b=None)
+  P3 [level=0]: Open for Questions & Live System Demonstration
+     Runs: 'Open for Questions & Live System Demonstration'(font=None, sz=None, b=None)

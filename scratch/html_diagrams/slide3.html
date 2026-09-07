@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 3864px;
+    height: 1584px;
+    background: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px 45px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tier {
+    width: 100%;
+    height: 460px;
+    border-radius: 20px;
+    border: 4px solid;
+    display: flex;
+    align-items: center;
+    padding: 20px 25px 20px 20px;
+    position: relative;
+  }
+  .tier-ingest { border-color: #d97706; background: #fffbeb; }
+  .tier-core { border-color: #16a34a; background: #f0fdf4; }
+  .tier-action { border-color: #2563eb; background: #eff6ff; }
+  .label-tab {
+    width: 90px;
+    height: 380px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .tab-ingest { background: #d97706; }
+  .tab-core { background: #16a34a; }
+  .tab-action { background: #2563eb; }
+  .cards-row {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 35px;
+    height: 100%;
+    gap: 30px;
+  }
+  .card {
+    flex: 1;
+    height: 340px;
+    background: #ffffff;
+    border: 3.5px solid #334155;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 25px 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  }
+  .card-title {
+    font-size: 34px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 18px;
+    line-height: 1.25;
+  }
+  .card-desc {
+    font-size: 22px;
+    font-weight: 500;
+    color: #475569;
+    line-height: 1.45;
+  }
+  svg.arrows-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3864px;
+    height: 1584px;
+    pointer-events: none;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+  <div class="tier tier-ingest">
+    <div class="label-tab tab-ingest">DATA INGESTION</div>
+    <div class="cards-row">
+      <div class="card">
+        <div class="card-title">Police FIRs &amp; OCR</div>
+        <div class="card-desc">Unstructured narrative text, BNS / IPC legal sections, chargesheets</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Telecom CDR &amp; Towers</div>
+        <div class="card-desc">IMEI, IMSI, call durations, azimuths &amp; cell tower triangulations</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Financial Records</div>
+        <div class="card-desc">NEFT, RTGS, UPI transfers, cyclic Hawala books &amp; ledger trails</div>
+      </div>
+      <div class="card">
+        <div class="card-title">OSINT &amp; CCTNS Records</div>
+        <div class="card-desc">Prior criminal convictions, active warrants, darknet &amp; digital intelligence</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier tier-core">
+    <div class="label-tab tab-core">AI &amp; GRAPH CORE</div>
+    <div class="cards-row">
+      <div class="card">
+        <div class="card-title">NLP Entity Extractor</div>
+        <div class="card-desc">Extracts suspects, aliases, burner phones, bank accounts &amp; locations</div>
+      </div>
+      <div class="card">
+        <div class="card-title">MultiDiGraph Engine</div>
+        <div class="card-desc">372 Nodes, 869 Edges, in-memory graph caching &amp; sub-ms queries</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Kingpin &amp; AML Detect</div>
+        <div class="card-desc">Betweenness, PageRank, 4-node circular Hawala loops (&lt;72h)</div>
+      </div>
+      <div class="card">
+        <div class="card-title">CEO Prime Agent Swarm</div>
+        <div class="card-desc">Autonomous multi-agent task planning, dynamic threat scoring (0–100)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tier tier-action">
+    <div class="label-tab tab-action">TACTICAL ACTION</div>
+    <div class="cards-row">
+      <div class="card">
+        <div class="card-title">Tactical Command C2</div>
+        <div class="card-desc">Real-time alert triage, collaborative multi-officer case Kanban</div>
+      </div>
+      <div class="card">
+        <div class="card-title">1-Click Graph Expand</div>
+        <div class="card-desc">2-hop suspect expansion, burner phone trails &amp; syndicate clusters</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Section 63 BSA Vault</div>
+        <div class="card-desc">SHA-256 blockchain ledger, tamper audit, court-certified PDF dossier</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Automated Alert Escalation</div>
+        <div class="card-desc">Instant high-threat escalation, officer dispatch &amp; docket assignment</div>
+      </div>
+    </div>
+  </div>
+
+  <svg class="arrows-overlay">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#334155"/>
+      </marker>
+      <marker id="dash-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+      </marker>
+    </defs>
+    <line x1="600" y1="480" x2="600" y2="570" stroke="#334155" stroke-width="4" marker-end="url(#arrow)" />
+    <line x1="600" y1="1025" x2="600" y2="1115" stroke="#334155" stroke-width="4" marker-end="url(#arrow)" />
+    <line x1="970" y1="795" x2="1080" y2="795" stroke="#334155" stroke-width="4" marker-end="url(#arrow)" />
+    <line x1="1465" y1="480" x2="1465" y2="570" stroke="#334155" stroke-width="4" marker-end="url(#arrow)" />
+    <line x1="1465" y1="1025" x2="1465" y2="1115" stroke="#334155" stroke-width="4" marker-end="url(#arrow)" />
+    <line x1="1840" y1="795" x2="1950" y2="795" stroke="#334155" stroke-width="4" marker-end="url(#arrow)" />
+    <line x1="2335" y1="480" x2="2335" y2="570" stroke="#334155" stroke-width="4" marker-end="url(#arrow)" />
+    <line x1="2335" y1="1025" x2="2335" y2="1115" stroke="#334155" stroke-width="4" marker-end="url(#arrow)" />
+    <line x1="2710" y1="795" x2="2820" y2="795" stroke="#334155" stroke-width="4" marker-end="url(#arrow)" />
+    <line x1="3200" y1="480" x2="3200" y2="570" stroke="#334155" stroke-width="4" marker-end="url(#arrow)" />
+    <line x1="3200" y1="1025" x2="3200" y2="1115" stroke="#334155" stroke-width="4" marker-end="url(#arrow)" />
+    <line x1="1950" y1="1335" x2="1840" y2="1335" stroke="#2563eb" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#dash-arrow)" />
+    <line x1="1080" y1="1335" x2="970" y2="1335" stroke="#2563eb" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#dash-arrow)" />
+  </svg>
+</body>
+</html>

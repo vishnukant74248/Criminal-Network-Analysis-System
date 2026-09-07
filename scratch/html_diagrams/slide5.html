@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 3815px;
+    height: 2015px;
+    background: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px 45px;
+    position: relative;
+    overflow: hidden;
+  }
+  .system-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: #ffffff;
+    padding: 22px 45px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  }
+  .system-header .title-grp h1 {
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .system-header .title-grp p {
+    font-size: 22px;
+    color: #94a3b8;
+    margin-top: 5px;
+  }
+  .system-header .badge-grp {
+    display: flex;
+    gap: 15px;
+  }
+  .badge {
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.25);
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #38bdf8;
+  }
+
+  /* TOP SECTION */
+  .top-section {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    height: 310px;
+  }
+  .user-card {
+    width: 31%;
+    height: 100%;
+    background: #f8fafc;
+    border: 3.5px solid #0284c7;
+    border-radius: 20px;
+    padding: 24px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(2, 132, 199, 0.08);
+  }
+  .user-card .badge-tag {
+    background: #0284c7;
+    color: white;
+    font-size: 18px;
+    font-weight: 800;
+    padding: 5px 15px;
+    border-radius: 20px;
+    align-self: flex-start;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .user-card h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 10px;
+  }
+  .user-card ul {
+    list-style: none;
+    font-size: 21px;
+    color: #334155;
+    line-height: 1.5;
+  }
+  .user-card ul li::before {
+    content: "▸ ";
+    color: #0284c7;
+    font-weight: bold;
+  }
+
+  .investigator-arrow {
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .ceo-card {
+    flex: 1;
+    height: 100%;
+    background: linear-gradient(135deg, #fefce8, #fef08a);
+    border: 4px solid #ca8a04;
+    border-radius: 20px;
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    box-shadow: 0 8px 24px rgba(202, 138, 4, 0.12);
+  }
+  .ceo-icon {
+    width: 120px;
+    height: 120px;
+    background: #ca8a04;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    color: #ffffff;
+    flex-shrink: 0;
+    box-shadow: 0 6px 14px rgba(202, 138, 4, 0.3);
+  }
+  .ceo-content h2 {
+    font-size: 34px;
+    font-weight: 900;
+    color: #854d0e;
+    margin-bottom: 8px;
+  }
+  .ceo-content p {
+    font-size: 22px;
+    font-weight: 600;
+    color: #713f12;
+    line-height: 1.45;
+  }
+  .ceo-badges {
+    display: flex;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .ceo-badge {
+    background: #ffffff;
+    border: 2px solid #ca8a04;
+    color: #854d0e;
+    font-size: 19px;
+    font-weight: 700;
+    padding: 6px 18px;
+    border-radius: 20px;
+  }
+
+  /* FLOW CONNECTOR ROW: Top to Middle */
+  .flow-connector-1 {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* MIDDLE SECTION: 4 AGENTS */
+  .swarm-title {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #475569;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .swarm-grid {
+    display: flex;
+    gap: 25px;
+    height: 640px;
+  }
+  .agent-card {
+    flex: 1;
+    background: #ffffff;
+    border: 3.5px solid;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 26px 22px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  }
+  .agent-card.blue { border-color: #2563eb; }
+  .agent-card.purple { border-color: #9333ea; }
+  .agent-card.amber { border-color: #ea580c; }
+  .agent-card.emerald { border-color: #059669; }
+
+  .agent-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid #f1f5f9;
+  }
+  .agent-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: white;
+    flex-shrink: 0;
+  }
+  .blue .agent-avatar { background: #2563eb; }
+  .purple .agent-avatar { background: #9333ea; }
+  .amber .agent-avatar { background: #ea580c; }
+  .emerald .agent-avatar { background: #059669; }
+
+  .agent-name {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.15;
+  }
+  .agent-role {
+    font-size: 19px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  .blue .agent-role { color: #2563eb; }
+  .purple .agent-role { color: #9333ea; }
+  .amber .agent-role { color: #ea580c; }
+  .emerald .agent-role { color: #059669; }
+
+  .agent-features {
+    list-style: none;
+    font-size: 20px;
+    line-height: 1.55;
+    color: #334155;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 6px;
+  }
+  .agent-features li {
+    position: relative;
+    padding-left: 26px;
+  }
+  .agent-features li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    font-weight: 900;
+  }
+  .blue .agent-features li::before { color: #2563eb; }
+  .purple .agent-features li::before { color: #9333ea; }
+  .amber .agent-features li::before { color: #ea580c; }
+  .emerald .agent-features li::before { color: #059669; }
+
+  .agent-tag {
+    margin-top: auto;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #475569;
+  }
+
+  /* FLOW CONNECTOR ROW: Middle to Bottom */
+  .flow-connector-2 {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* BOTTOM SECTION: PROTOCOLS */
+  .bottom-section {
+    display: flex;
+    gap: 25px;
+    height: 280px;
+  }
+  .protocol-box {
+    flex: 1;
+    height: 100%;
+    border-radius: 20px;
+    padding: 24px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 3.5px solid;
+  }
+  .protocol-critical { background: #fef2f2; border-color: #ef4444; }
+  .protocol-critical h3 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #b91c1c;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .protocol-critical p { font-size: 20px; color: #7f1d1d; line-height: 1.45; }
+
+  .protocol-kanban { background: #eff6ff; border-color: #3b82f6; }
+  .protocol-kanban h3 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #1d4ed8;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .protocol-kanban p { font-size: 20px; color: #1e40af; line-height: 1.45; }
+
+  .protocol-dossier { background: #f0fdf4; border-color: #10b981; }
+  .protocol-dossier h3 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #047857;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .protocol-dossier p { font-size: 20px; color: #065f46; line-height: 1.45; }
+</style>
+</head>
+<body>
+  <!-- HEADER -->
+  <div class="system-header">
+    <div class="title-grp">
+      <h1>⚡ SENTINEL AGENCY — MULTI-AGENT INTELLIGENCE SWARM</h1>
+      <p>Hierarchical Decision-Making, Task Decomposition &amp; Autonomous Investigation Lifecycle</p>
+    </div>
+    <div class="badge-grp">
+      <div class="badge">AGENCY SWARM FRAMEWORK</div>
+      <div class="badge">NETWORKX MULTIDIGRAPH</div>
+      <div class="badge">SEC 63 BSA CERTIFIED</div>
+    </div>
+  </div>
+
+  <!-- TOP SECTION -->
+  <div class="top-section">
+    <div class="user-card">
+      <div class="badge-tag">INVESTIGATOR COMMAND</div>
+      <h2>Natural Language Case Inquiry</h2>
+      <ul>
+        <li>"Identify supreme leader of Dhanbad Coalfield gang"</li>
+        <li>"Uncover circular Hawala money loops under ₹50,000"</li>
+        <li>"Generate court-certified Sec 63 BSA dossier for Vikram Sinha"</li>
+      </ul>
+    </div>
+
+    <div class="investigator-arrow">
+      <svg width="60" height="40" viewBox="0 0 60 40">
+        <defs>
+          <marker id="arr-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#0284c7"/>
+          </marker>
+        </defs>
+        <line x1="5" y1="20" x2="50" y2="20" stroke="#0284c7" stroke-width="6" marker-end="url(#arr-blue)" />
+      </svg>
+    </div>
+
+    <div class="ceo-card">
+      <div class="ceo-icon">👑</div>
+      <div class="ceo-content">
+        <h2>CEO PRIME AGENT (Supreme Coordinator)</h2>
+        <p>Receives high-level investigation queries, performs step-by-step goal decomposition, dynamically coordinates the 4 specialist sub-agents, synthesizes findings, and escalates critical threats directly to command.</p>
+        <div class="ceo-badges">
+          <div class="ceo-badge">Goal Planning &amp; Task Decomposition</div>
+          <div class="ceo-badge">Chain of Command Coordination</div>
+          <div class="ceo-badge">Executive Briefing &amp; Escalation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW CONNECTOR 1: CEO to the 4 Agents -->
+  <div class="flow-connector-1">
+    <svg width="3725" height="80" viewBox="0 0 3725 80">
+      <defs>
+        <marker id="arr-gold" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#ca8a04"/>
+        </marker>
+      </defs>
+      <!-- Central trunk dropping from CEO card center (approx x=2480) -->
+      <line x1="2480" y1="0" x2="2480" y2="35" stroke="#ca8a04" stroke-width="5" />
+      <!-- Horizontal bus bar connecting all 4 agent columns -->
+      <!-- Agent centers: col1=440, col2=1380, col3=2320, col4=3260 -->
+      <line x1="440" y1="35" x2="3260" y2="35" stroke="#ca8a04" stroke-width="5" />
+      <!-- Downward arrows to each agent -->
+      <line x1="440" y1="35" x2="440" y2="75" stroke="#ca8a04" stroke-width="5" marker-end="url(#arr-gold)" />
+      <line x1="1380" y1="35" x2="1380" y2="75" stroke="#ca8a04" stroke-width="5" marker-end="url(#arr-gold)" />
+      <line x1="2320" y1="35" x2="2320" y2="75" stroke="#ca8a04" stroke-width="5" marker-end="url(#arr-gold)" />
+      <line x1="3260" y1="35" x2="3260" y2="75" stroke="#ca8a04" stroke-width="5" marker-end="url(#arr-gold)" />
+    </svg>
+  </div>
+
+  <!-- SWARM SECTION -->
+  <div>
+    <div class="swarm-title">⚡ Specialized Intelligence Sub-Agent Swarm (Operational Tier)</div>
+    <div class="swarm-grid">
+      <div class="agent-card blue">
+        <div class="agent-header">
+          <div class="agent-avatar">📊</div>
+          <div>
+            <div class="agent-name">DataIntelAgent</div>
+            <div class="agent-role">Data Ingestion &amp; Entity Extraction</div>
+          </div>
+        </div>
+        <ul class="agent-features">
+          <li><strong>Multi-Source Parsing:</strong> Ingests police FIRs, telecom CDRs, bank records, and CCTNS histories.</li>
+          <li><strong>IndianLawNER:</strong> Extracts suspects, aliases, burner phones, bank accounts, and locations.</li>
+          <li><strong>Fuzzy Deduplication:</strong> Jaro-Winkler algorithm (&gt;88%) merges fractured identity records.</li>
+          <li><strong>Clean Structured JSON:</strong> Delivers validated entity payloads for graph ingestion.</li>
+        </ul>
+        <div class="agent-tag">Tools: ExtractEntities, IngestData, QueryDB</div>
+      </div>
+
+      <div class="agent-card purple">
+        <div class="agent-header">
+          <div class="agent-avatar">🕸️</div>
+          <div>
+            <div class="agent-name">NetworkAnalystAgent</div>
+            <div class="agent-role">Knowledge Graph &amp; Centrality Core</div>
+          </div>
+        </div>
+        <ul class="agent-features">
+          <li><strong>MultiDiGraph Engine:</strong> In-memory management of 372 nodes and 869 criminal edges.</li>
+          <li><strong>5 Centrality Algorithms:</strong> Betweenness, PageRank, Degree, Closeness, Eigenvector.</li>
+          <li><strong>Shadow Kingpin Discovery:</strong> Flags covert brokers with low degree but high betweenness.</li>
+          <li><strong>Louvain Modularity:</strong> Automatically detects sleeper syndicates and isolated clusters.</li>
+        </ul>
+        <div class="agent-tag">Tools: ComputeCentrality, DetectCommunities, AnalyzeNetwork</div>
+      </div>
+
+      <div class="agent-card amber">
+        <div class="agent-header">
+          <div class="agent-avatar">🎯</div>
+          <div>
+            <div class="agent-name">ThreatScoringAgent</div>
+            <div class="agent-role">Risk Assessment &amp; Threat Scoring</div>
+          </div>
+        </div>
+        <ul class="agent-features">
+          <li><strong>Threat Scoring Engine:</strong> Dynamic 0–100 threat score based on criminal topology.</li>
+          <li><strong>Hawala Loop Traversal:</strong> Detects 4-node circular fund loops (&lt;72h) and sub-₹50k smurfing.</li>
+          <li><strong>Burner Triangulation:</strong> Surfaces IMEI device reuse across rotating SIM cards and nocturnal co-locations.</li>
+          <li><strong>Threat Tiering:</strong> LOW (&lt;25), MEDIUM (25–49), HIGH (50–74), CRITICAL (≥75).</li>
+        </ul>
+        <div class="agent-tag">Tools: ScoreThreat, GenerateAlert, TrackEscalation</div>
+      </div>
+
+      <div class="agent-card emerald">
+        <div class="agent-header">
+          <div class="agent-avatar">📑</div>
+          <div>
+            <div class="agent-name">ReportAgent</div>
+            <div class="agent-role">Forensic Dossier &amp; Export Engine</div>
+          </div>
+        </div>
+        <ul class="agent-features">
+          <li><strong>Section 63 BSA Dossiers:</strong> Generates court-admissible PDFs compliant with Indian evidence laws.</li>
+          <li><strong>Blockchain Verification:</strong> SHA-256 hash sealing ensures 100% tamper-evident chain of custody.</li>
+          <li><strong>Executive Summaries:</strong> Generates concise &lt;300-word command briefings and digests.</li>
+          <li><strong>Temporal Timelines:</strong> Reconstructs 48-hour pre-crime communication surges and meetups.</li>
+        </ul>
+        <div class="agent-tag">Tools: ExportReport, GenerateReport, HashSealer</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW CONNECTOR 2: Swarm to Protocol -->
+  <div class="flow-connector-2">
+    <svg width="3725" height="70" viewBox="0 0 3725 70">
+      <defs>
+        <marker id="arr-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#ef4444"/>
+        </marker>
+        <marker id="arr-blue2" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#3b82f6"/>
+        </marker>
+        <marker id="arr-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981"/>
+        </marker>
+      </defs>
+      <!-- ThreatScoringAgent to CRITICAL box (center around x=610) -->
+      <path d="M 2320 0 L 2320 30 L 610 30 L 610 65" fill="none" stroke="#ef4444" stroke-width="4" marker-end="url(#arr-red)" />
+      <!-- NetworkAnalystAgent to Kanban box (center around x=1860) -->
+      <path d="M 1380 0 L 1380 30 L 1860 30 L 1860 65" fill="none" stroke="#3b82f6" stroke-width="4" marker-end="url(#arr-blue2)" />
+      <!-- ReportAgent to Section 63 BSA box (center around x=3110) -->
+      <path d="M 3260 0 L 3260 30 L 3110 30 L 3110 65" fill="none" stroke="#10b981" stroke-width="4" marker-end="url(#arr-green)" />
+    </svg>
+  </div>
+
+  <!-- BOTTOM PROTOCOL SECTION -->
+  <div class="bottom-section">
+    <div class="protocol-box protocol-critical">
+      <h3>🚨 CRITICAL Escalation Protocol (Score ≥ 75)</h3>
+      <p>Immediate override: Triggers high-priority visual alert across C2 dashboard, notifies CEO Prime Agent, and pauses low-priority passive monitors to deploy tactical interception.</p>
+    </div>
+    <div class="protocol-box protocol-kanban">
+      <h3>📋 Collaborative Case Board Integration</h3>
+      <p>Multi-officer case dockets automatically populated with suspect graph subgraphs, cell tower trails, and intercepted financial ledgers for inter-agency coordination.</p>
+    </div>
+    <div class="protocol-box protocol-dossier">
+      <h3>⚖️ Section 63 BSA Court Admissibility</h3>
+      <p>100% tamper-proof electronic evidence generated with cryptographic SHA-256 seal, automated audit log, and QR verification for non-bailable warrant prosecution.</p>
+    </div>
+  </div>
+</body>
+</html>

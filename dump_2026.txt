@@ -1,0 +1,217 @@
+==============================
+=== SLIDE 1 ===
+==============================
+--- Shape 0: name=Hexagon 1, type=AUTO_SHAPE (1) ---
+
+--- Shape 1: name=Picture 2, type=PICTURE (13) ---
+--- Shape 2: name=Picture 3, type=PICTURE (13) ---
+--- Shape 3: name=TextBox 4, type=TEXT_BOX (17) ---
+SMART INDIA HACKATHON 2026
+--- Shape 4: name=TextBox 5, type=TEXT_BOX (17) ---
+TITLE PAGE
+--- Shape 5: name=TextBox 6, type=TEXT_BOX (17) ---
+• Problem Statement ID – 26189
+• Problem Statement Title - AI-Powered Criminal Network Analysis System
+• Theme - Blockchain & Cybersecurity
+• PS Category - Software
+• Team ID - SIH2026-ST-842
+• Team Name (Registered on portal) – Stryker
+==============================
+=== SLIDE 2 ===
+==============================
+--- Shape 0: name=Oval 1, type=AUTO_SHAPE (1) ---
+STRYKER
+--- Shape 1: name=TextBox 2, type=TEXT_BOX (17) ---
+IDEA TITLE
+--- Shape 2: name=Picture 3, type=PICTURE (13) ---
+--- Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1) ---
+
+--- Shape 4: name=TextBox 5, type=TEXT_BOX (17) ---
+@SIH Idea submission- Template
+--- Shape 5: name=TextBox 6, type=TEXT_BOX (17) ---
+2
+--- Shape 6: name=Rounded Rectangle 7, type=AUTO_SHAPE (1) ---
+
+--- Shape 7: name=TextBox 8, type=TEXT_BOX (17) ---
+IDEA / SOLUTION :
+SENTINEL: AI-Powered Intelligence Platform for Real-Time Criminal Network Analysis & Crime Deterrence
+• Unified Knowledge Graph : Fuses police FIRs, phone call records (CDRs), bank accounts, and video feeds into one real-time network.
+• Kingpin & Boss Discovery : Graph centrality algorithms automatically uncover covert syndicate leaders hiding behind operatives.
+• Hawala & AML Detection : Detects 4-node circular money loops (<72h) and smurfing transfers below ₹50,000 threshold.
+• Burner Phone Triangulation : Tracks shared mobile handsets (IMEI reuse) and co-located nocturnal meetings (<500m).
+• Women Safety Edge AI : Live CCTV monitoring detects stalking and cornering with 1-click Dial 112 PCR dispatch.
+• Statutory Evidence Vault : Cryptographic SHA-256 blockchain ledger ensuring 100% Section 63 BSA / 65B IEA court admissibility.
+--- Shape 8: name=Rounded Rectangle 9, type=AUTO_SHAPE (1) ---
+
+--- Shape 9: name=TextBox 10, type=TEXT_BOX (17) ---
+PROBLEM RESOLUTION :
+❖ Breaks Data Silos : 
+Police usually examine FIRs, phone logs, and bank statements in isolation. SENTINEL automatically merges fragmented clues into an interactive 360° map in seconds.
+❖ Exposes Hidden Syndicate Bosses : 
+Crime kingpins rarely use their own phones. Advanced Betweenness Centrality and PageRank expose the mastermind brokers coordinating criminal activities.
+❖ Stops Crime in Real-Time : 
+Shifts law enforcement from slow post-crime investigation to proactive live deterrence—flagging threats and dispatching emergency PCR vans in < 4 minutes.
+❖ Guarantees Court Convictions : 
+Digital evidence often fails in court due to broken chain of custody. SENTINEL creates Section 63 BSA certified PDF dossiers with SHA-256 blockchain verification.
+==============================
+=== SLIDE 3 ===
+==============================
+--- Shape 0: name=Oval 1, type=AUTO_SHAPE (1) ---
+STRYKER
+--- Shape 1: name=TextBox 2, type=TEXT_BOX (17) ---
+TECHNICAL APPROACH
+--- Shape 2: name=Picture 3, type=PICTURE (13) ---
+--- Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1) ---
+
+--- Shape 4: name=TextBox 5, type=TEXT_BOX (17) ---
+@SIH Idea submission- Template
+--- Shape 5: name=TextBox 6, type=TEXT_BOX (17) ---
+3
+--- Shape 6: name=Picture 7, type=PICTURE (13) ---
+==============================
+=== SLIDE 4 ===
+==============================
+--- Shape 0: name=Oval 1, type=AUTO_SHAPE (1) ---
+STRYKER
+--- Shape 1: name=TextBox 2, type=TEXT_BOX (17) ---
+TECHNICAL APPROACH
+--- Shape 2: name=Picture 3, type=PICTURE (13) ---
+--- Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1) ---
+
+--- Shape 4: name=TextBox 5, type=TEXT_BOX (17) ---
+@SIH Idea submission- Template
+--- Shape 5: name=TextBox 6, type=TEXT_BOX (17) ---
+4
+--- Shape 6: name=Picture 7, type=PICTURE (13) ---
+==============================
+=== SLIDE 5 ===
+==============================
+--- Shape 0: name=Oval 1, type=AUTO_SHAPE (1) ---
+STRYKER
+--- Shape 1: name=TextBox 2, type=TEXT_BOX (17) ---
+TECHNICAL APPROACH
+--- Shape 2: name=Picture 3, type=PICTURE (13) ---
+--- Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1) ---
+
+--- Shape 4: name=TextBox 5, type=TEXT_BOX (17) ---
+@SIH Idea submission- Template
+--- Shape 5: name=TextBox 6, type=TEXT_BOX (17) ---
+5
+--- Shape 6: name=Picture 7, type=PICTURE (13) ---
+==============================
+=== SLIDE 6 ===
+==============================
+--- Shape 0: name=Oval 1, type=AUTO_SHAPE (1) ---
+STRYKER
+--- Shape 1: name=TextBox 2, type=TEXT_BOX (17) ---
+TECH STACK
+--- Shape 2: name=Picture 3, type=PICTURE (13) ---
+--- Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1) ---
+
+--- Shape 4: name=TextBox 5, type=TEXT_BOX (17) ---
+@SIH Idea submission- Template
+--- Shape 5: name=TextBox 6, type=TEXT_BOX (17) ---
+6
+--- Shape 6: name=Rounded Rectangle 7, type=AUTO_SHAPE (1) ---
+
+--- Shape 7: name=TextBox 8, type=TEXT_BOX (17) ---
+Frontend Dashboard :
+• React 19, TypeScript, Vite – High-performance responsive tactical UI built for police control room command.
+• Tailwind CSS – Low-light dark tactical theme reducing officer eye fatigue.
+• Cytoscape.js & Leaflet.js – Interactive 2D/3D suspect graph networks and geo-spatial cell tower tracking.
+Backend + Intelligence Core :
+• FastAPI (Python 3.12) – Ultra-fast asynchronous REST APIs with sub-millisecond query latency.
+• NetworkX MultiDiGraph – In-memory graph engine managing 372 nodes, 869 edges and centrality metrics.
+• SQLite WAL + Blockchain Hash Chain – Thread-safe data storage with SHA-256 evidence sealing.
+• YOLO & spaCy NLP – Real-time gender classification edge AI & automated FIR entity extraction.
+Statutory Legal Vault :
+• ReportLab Forensic Engine – Generates court-certified Section 63 BSA dossiers with QR code verification.
+--- Shape 8: name=Picture 9, type=PICTURE (13) ---
+==============================
+=== SLIDE 7 ===
+==============================
+--- Shape 0: name=Oval 1, type=AUTO_SHAPE (1) ---
+STRYKER
+--- Shape 1: name=TextBox 2, type=TEXT_BOX (17) ---
+FEASIBILITY AND VIABILITY
+--- Shape 2: name=Picture 3, type=PICTURE (13) ---
+--- Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1) ---
+
+--- Shape 4: name=TextBox 5, type=TEXT_BOX (17) ---
+@SIH Idea submission- Template
+--- Shape 5: name=TextBox 6, type=TEXT_BOX (17) ---
+7
+--- Shape 6: name=Rounded Rectangle 7, type=AUTO_SHAPE (1) ---
+
+--- Shape 7: name=TextBox 8, type=TEXT_BOX (17) ---
+Technical Feasibility
+• Uses proven open-source frameworks – FastAPI, React 19, NetworkX
+• Direct compatibility with police CCTNS and telecom CDR exports
+• Edge AI runs efficiently on existing workstation CPUs / GPUs
+• Cryptographic SHA-256 ledger ensures 100% zero-gas data integrity
+Economic Feasibility
+• Zero expensive software licenses or cloud vendor lock-in
+• Directly leverages city CCTV cameras & standard police PC hardware
+• Compresses weeks of manual investigative analysis into seconds
+• Drastically reduces police manpower costs during major syndicate probes
+--- Shape 8: name=Rounded Rectangle 9, type=AUTO_SHAPE (1) ---
+
+--- Shape 9: name=TextBox 10, type=TEXT_BOX (17) ---
+“The solution is technically robust, low-cost, and operationally practical—enabling police to dismantle syndicates faster while protecting vulnerable citizens.”
+--- Shape 10: name=Rounded Rectangle 11, type=AUTO_SHAPE (1) ---
+
+--- Shape 11: name=TextBox 12, type=TEXT_BOX (17) ---
+Challenges & Strategies
+• Unstructured Police Data – FIRs contain spelling mistakes, slang, and varied dialects. Solved via AI Named Entity Recognition + Jaro-Winkler fuzzy deduplication (>88%).
+• Massive CDR & Financial Scale – Correlating millions of call records without lag. Solved via in-memory graph caching & SQLite WAL indexing for sub-millisecond lookups.
+==============================
+=== SLIDE 8 ===
+==============================
+--- Shape 0: name=Oval 1, type=AUTO_SHAPE (1) ---
+STRYKER
+--- Shape 1: name=TextBox 2, type=TEXT_BOX (17) ---
+IMPACT AND BENEFITS
+--- Shape 2: name=Picture 3, type=PICTURE (13) ---
+--- Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1) ---
+
+--- Shape 4: name=TextBox 5, type=TEXT_BOX (17) ---
+@SIH Idea submission- Template
+--- Shape 5: name=TextBox 6, type=TEXT_BOX (17) ---
+8
+--- Shape 6: name=Rounded Rectangle 7, type=AUTO_SHAPE (1) ---
+
+--- Shape 7: name=TextBox 8, type=TEXT_BOX (17) ---
+Law Enforcement & Police Officers
+• 1-click network expansion reveals 2-hop associates, burner phones, and money trails.
+• Automatically identifies shadow kingpins who never make direct phone calls.
+• Collaborative case board eliminates inter-departmental communication delays.
+Women & Vulnerable Citizens
+• Autonomous CCTV monitoring detects stalking, cornering, and distress in deserted transit zones.
+• 1-click Dial 112 PCR dispatch sends emergency patrol units within 3.5 minutes.
+• Proactive crime deterrence prevents harassment before physical harm occurs.
+Judiciary & Legal Prosecution
+• 100% tamper-evident digital evidence meeting Section 63 BSA / 65B IEA standards.
+• Court-ready forensic PDF dossiers accelerate trials and eliminate chargesheet delays.
+--- Shape 8: name=Rounded Rectangle 9, type=AUTO_SHAPE (1) ---
+
+--- Shape 9: name=TextBox 10, type=TEXT_BOX (17) ---
+“SENTINEL transforms fragmented crime records into real-time operational clarity—protecting vulnerable citizens, disrupting criminal syndicates, and accelerating the delivery of justice.”
+==============================
+=== SLIDE 9 ===
+==============================
+--- Shape 0: name=Oval 1, type=AUTO_SHAPE (1) ---
+STRYKER
+--- Shape 1: name=TextBox 2, type=TEXT_BOX (17) ---
+
+--- Shape 2: name=Picture 3, type=PICTURE (13) ---
+--- Shape 3: name=Rectangle 4, type=AUTO_SHAPE (1) ---
+
+--- Shape 4: name=TextBox 5, type=TEXT_BOX (17) ---
+@SIH Idea submission- Template
+--- Shape 5: name=TextBox 6, type=TEXT_BOX (17) ---
+9
+--- Shape 6: name=TextBox 7, type=TEXT_BOX (17) ---
+THANK YOU
+SENTINEL v2.0 – AI-Powered Criminal Network Analysis System
+Team Stryker • Problem Statement ID: 26189
+Open for Questions & Live System Demonstration

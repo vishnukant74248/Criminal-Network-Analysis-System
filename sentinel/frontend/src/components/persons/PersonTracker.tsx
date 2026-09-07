@@ -84,46 +84,86 @@ export const PersonTracker: React.FC = () => {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const alertTimerRef = useRef<number | null>(null);
   const lastSoundTimeRef = useRef<number>(0);
+  const lastMatchTimeRef = useRef<number>(0);
 
   // Tactical Audio Alert synthesizer via Web Audio API (Loud 2-tone siren)
   const audioCtxRef = useRef<AudioContext | null>(null);
 
-  const playAlertSound = useCallback(() => {
+  const unlockAudio = useCallback(() => {
     try {
       const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioCtx) return;
       if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
         audioCtxRef.current = new AudioCtx();
       }
+      if (audioCtxRef.current.state === 'suspended') {
+        audioCtxRef.current.resume().catch(() => {});
+      }
+    } catch (e) {
+      console.warn('AudioContext unlock error:', e);
+    }
+  }, []);
+
+  const playAlertSound = useCallback(() => {
+    try {
+      unlockAudio();
       const ctx = audioCtxRef.current;
+      if (!ctx) return;
       if (ctx.state === 'suspended') {
         ctx.resume().catch(() => {});
       }
-      
+
       const now = ctx.currentTime;
-      // High-low tactical siren burst
+      // Loud alternating police/security siren (0.8s)
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sawtooth';
-      
-      // Siren warble: 960Hz -> 720Hz -> 960Hz
-      osc.frequency.setValueAtTime(960, now);
-      osc.frequency.linearRampToValueAtTime(720, now + 0.12);
-      osc.frequency.linearRampToValueAtTime(960, now + 0.24);
-      osc.frequency.linearRampToValueAtTime(680, now + 0.38);
 
-      gain.gain.setValueAtTime(0.45, now);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.42);
+      // 4-cycle warble: 980Hz -> 700Hz -> 980Hz -> 700Hz -> 980Hz
+      osc.frequency.setValueAtTime(980, now);
+      osc.frequency.linearRampToValueAtTime(700, now + 0.18);
+      osc.frequency.linearRampToValueAtTime(980, now + 0.36);
+      osc.frequency.linearRampToValueAtTime(700, now + 0.54);
+      osc.frequency.linearRampToValueAtTime(950, now + 0.72);
+
+      gain.gain.setValueAtTime(0.80, now);
+      gain.gain.setValueAtTime(0.80, now + 0.68);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.79);
 
       osc.connect(gain);
       gain.connect(ctx.destination);
 
       osc.start(now);
-      osc.stop(now + 0.42);
+      osc.stop(now + 0.80);
+
+      // High-pitch piercing alarm burst for laptop speakers
+      const beep = ctx.createOscillator();
+      const beepGain = ctx.createGain();
+      beep.type = 'square';
+      beep.frequency.setValueAtTime(1500, now);
+      beep.frequency.setValueAtTime(1500, now + 0.20);
+      beep.frequency.setValueAtTime(1900, now + 0.40);
+      beepGain.gain.setValueAtTime(0.40, now);
+      beepGain.gain.exponentialRampToValueAtTime(0.01, now + 0.55);
+      beep.connect(beepGain);
+      beepGain.connect(ctx.destination);
+      beep.start(now);
+      beep.stop(now + 0.56);
     } catch (e) {
       console.warn('Audio alert play error:', e);
     }
-  }, []);
+  }, [unlockAudio]);
+
+  // Global user interaction listener to unlock audio for modern browser autoplay policies
+  useEffect(() => {
+    const handleGesture = () => unlockAudio();
+    window.addEventListener('click', handleGesture, { passive: true });
+    window.addEventListener('keydown', handleGesture, { passive: true });
+    return () => {
+      window.removeEventListener('click', handleGesture);
+      window.removeEventListener('keydown', handleGesture);
+    };
+  }, [unlockAudio]);
 
   const handleClearTarget = async () => {
     try {
@@ -297,6 +337,7 @@ export const PersonTracker: React.FC = () => {
   };
 
   const startLive = async () => {
+    unlockAudio();
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { width: { ideal: 1280 }, height: { ideal: 720 } }
@@ -420,24 +461,27 @@ export const PersonTracker: React.FC = () => {
         }
 
         if (hasTargetMatch) {
+          lastMatchTimeRef.current = now;
           setTargetAlert({
             active: true,
             matchScore: topMatchScore,
             time: timestamp
           });
           if (soundEnabled) {
-            if (now - lastSoundTimeRef.current > 1500) {
+            if (now - lastSoundTimeRef.current > 1200) {
               lastSoundTimeRef.current = now;
               playAlertSound();
             }
           }
           if (alertTimerRef.current) clearTimeout(alertTimerRef.current);
           alertTimerRef.current = window.setTimeout(() => {
-            setTargetAlert(prev => prev ? { ...prev, active: false } : null);
-          }, 1500);
+            if (Date.now() - lastMatchTimeRef.current >= 3000) {
+              setTargetAlert(null);
+            }
+          }, 3200);
         } else {
-          // If the target person is NOT in frame (e.g. another person or nobody), immediately silence & clear alert
-          if (targetAlert?.active) {
+          // Debounce: only clear alert if no target match detected for > 3.0 seconds
+          if (now - lastMatchTimeRef.current > 3000) {
             setTargetAlert(null);
           }
         }
@@ -595,6 +639,14 @@ export const PersonTracker: React.FC = () => {
                   </div>
                   <div className="flex items-center space-x-2">
                     <button
+                      onClick={() => { unlockAudio(); playAlertSound(); }}
+                      className="px-2 py-1 rounded text-xs font-mono font-bold bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 flex items-center space-x-1 transition-colors cursor-pointer"
+                      title="Test police siren alert sound"
+                    >
+                      <BellRing className="w-3.5 h-3.5 text-amber-600 animate-bounce" />
+                      <span>Test Siren</span>
+                    </button>
+                    <button
                       onClick={() => setSoundEnabled(!soundEnabled)}
                       className={`p-1.5 rounded text-xs font-mono flex items-center space-x-1 transition-colors ${
                         soundEnabled ? 'bg-red-100 text-red-700 hover:bg-red-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
@@ -611,6 +663,29 @@ export const PersonTracker: React.FC = () => {
                       <XCircle className="w-3.5 h-3.5" />
                       <span>Clear</span>
                     </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Emergency Alert Banner (Prominent Header Alert) */}
+              {targetAlert?.active && (
+                <div className="mb-3 px-4 py-2.5 bg-red-600 border-2 border-red-400 rounded-xl text-white shadow-xl flex items-center justify-between animate-pulse shrink-0">
+                  <div className="flex items-center space-x-3">
+                    <ShieldAlert className="w-6 h-6 text-yellow-300 shrink-0" />
+                    <div>
+                      <div className="font-mono font-black text-sm tracking-wider uppercase flex items-center space-x-2">
+                        <span>🚨 TARGET SUSPECT IN SURVEILLANCE FEED!</span>
+                        <span className="bg-yellow-400 text-black px-2 py-0.5 rounded text-xs font-black">
+                          {targetAlert.matchScore}% MATCH
+                        </span>
+                      </div>
+                      <div className="text-xs text-red-100 font-mono">
+                        Biometrics matched uploaded evidence. Person highlighted with Red Laser Line.
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-xs font-mono font-bold bg-black/40 px-3 py-1.5 rounded-lg border border-red-300/40 shrink-0">
+                    ALARM ACTIVE 🔊
                   </div>
                 </div>
               )}

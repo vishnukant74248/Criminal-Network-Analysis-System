@@ -114,29 +114,43 @@ class FaceProcessor:
             pass
 
         try:
-            # Multi-channel color & structure descriptor (128 dimensions: 64 HSV histogram + 64 spatial grid)
-            features = []
-            if len(crop.shape) == 3 and crop.shape[2] == 3:
-                # 1. HSV color histogram (Hue + Saturation: 8x8 = 64 bins)
-                hsv = cv2.cvtColor(crop, cv2.COLOR_BGR2HSV)
-                hist = cv2.calcHist([hsv], [0, 1], None, [8, 8], [0, 180, 0, 256])
-                hist_norm = cv2.normalize(hist, hist).flatten()
-                features.append(hist_norm)
-                gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
-            else:
-                gray = crop
-                features.append(np.zeros(64, dtype=np.float32))
+            # Highly discriminative biometric & appearance descriptor:
+            # 1. 3D HSV Color Histogram (16 H x 4 S x 4 V = 256 bins)
+            hsv = cv2.cvtColor(crop, cv2.COLOR_BGR2HSV)
+            hist_hsv = cv2.calcHist([hsv], [0, 1, 2], None, [16, 4, 4], [0, 180, 0, 256, 0, 256]).flatten()
+            hist_hsv = hist_hsv / (np.sum(hist_hsv) + 1e-6)
 
-            # 2. Spatial intensity structure grid (8x8 = 64 dimensions)
-            resized = cv2.resize(gray, (8, 8), interpolation=cv2.INTER_AREA).astype(np.float32)
-            struct_norm = cv2.normalize(resized, resized).flatten()
-            features.append(struct_norm)
+            # 2. 3D Lab Perceptual Color Histogram (4 L x 4 a x 4 b = 64 bins)
+            lab = cv2.cvtColor(crop, cv2.COLOR_BGR2Lab)
+            hist_lab = cv2.calcHist([lab], [0, 1, 2], None, [4, 4, 4], [0, 256, 0, 256, 0, 256]).flatten()
+            hist_lab = hist_lab / (np.sum(hist_lab) + 1e-6)
 
-            vector = np.concatenate(features).astype(np.float32)
-            norm = np.linalg.norm(vector)
+            # 3. Spatial Color Distribution across 4 vertical body zones (Head, Upper Torso, Mid, Lower)
+            h, w = crop.shape[:2]
+            zones = []
+            for i in range(4):
+                z_start = int(h * (i / 4.0))
+                z_end = int(h * ((i + 1) / 4.0))
+                zone = crop[z_start:z_end, :]
+                if zone.size > 0:
+                    m, s = cv2.meanStdDev(zone)
+                    zones.extend(m.flatten() / 255.0)
+                    zones.extend(s.flatten() / 255.0)
+                else:
+                    zones.extend([0.0] * 6)
+            zones = np.array(zones, dtype=np.float32)
+
+            # 4. Normalized Grayscale Texture Grid (8x8 = 64 dimensions)
+            gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
+            grid = cv2.resize(gray, (8, 8), interpolation=cv2.INTER_AREA).astype(np.float32)
+            grid = (grid - np.mean(grid)) / (np.std(grid) + 1e-5)
+            grid_norm = grid.flatten() / (np.linalg.norm(grid) + 1e-5)
+
+            feat = np.concatenate([hist_hsv, hist_lab, zones, grid_norm]).astype(np.float32)
+            norm = np.linalg.norm(feat)
             if norm > 0:
-                vector = vector / norm
-            return vector
+                feat = feat / norm
+            return feat
         except Exception as e:
             return None
 

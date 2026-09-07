@@ -388,9 +388,10 @@ export const PersonTracker: React.FC = () => {
           if (ctx && isLiveActiveRef.current) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             if (res?.persons && Array.isArray(res.persons)) {
-              res.persons.forEach((p: any, pIdx: number) => {
-                // If this specific person matched OR if target matched overall on single detection, show bold RED line instead of green
-                const isThisMatch = Boolean(p.is_target_match || (hasTargetMatch && (res.persons.length === 1 || pIdx === 0)));
+              res.persons.forEach((p: any) => {
+                // Strict matching: ONLY the person whose biometric features match the uploaded photo turns RED.
+                // Any other person detected in camera remains standard GREEN line (no alert).
+                const isThisMatch = Boolean(p.is_target_match);
                 const pMode = isThisMatch ? 'match' : 'live';
                 const score = p.match_similarity || (isThisMatch ? topMatchScore : 0);
                 drawBoundingBox(ctx, p.bounding_box, p.person_index, p.confidence, pMode, score);

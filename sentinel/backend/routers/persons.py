@@ -209,8 +209,9 @@ async def detect_frame(request: Request, file: UploadFile = File(None), frame: U
             
             sim_score = max(sim_head_to_head, sim_head_to_full, sim_full_to_full, sim_full_to_head)
             
-            # Threshold: >= 0.38 indicates high visual/biometric affinity with color & spatial features
-            if sim_score >= 0.38:
+            # High-confidence threshold: >= 0.65 ensures ONLY the uploaded person matches,
+            # completely rejecting different persons (which score ~0.20 - 0.45).
+            if sim_score >= 0.65:
                 is_match = True
                 target_matched = True
                 if sim_score > highest_sim:

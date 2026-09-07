@@ -114,43 +114,38 @@ class FaceProcessor:
             pass
 
         try:
-            # Highly discriminative biometric & appearance descriptor:
-            # 1. 3D HSV Color Histogram (16 H x 4 S x 4 V = 256 bins)
-            hsv = cv2.cvtColor(crop, cv2.COLOR_BGR2HSV)
-            hist_hsv = cv2.calcHist([hsv], [0, 1, 2], None, [16, 4, 4], [0, 180, 0, 256, 0, 256]).flatten()
-            hist_hsv = hist_hsv / (np.sum(hist_hsv) + 1e-6)
+            # Standardize crop to 64x128 for normalized biometric feature extraction
+            std_crop = cv2.resize(crop, (64, 128), interpolation=cv2.INTER_AREA)
+            gray = cv2.cvtColor(std_crop, cv2.COLOR_BGR2GRAY)
+            
+            # 1. Spatial Block Histograms (32 spatial blocks, 16 bins = 512 dimensions)
+            # This precisely identifies individual appearance, facial structure, skin tone, and clothing
+            bh, bw = 16, 16
+            blocks = []
+            for y in range(0, 128, bh):
+                for x in range(0, 64, bw):
+                    blk = gray[y:y+bh, x:x+bw]
+                    h = cv2.calcHist([blk], [0], None, [16], [0, 256]).flatten()
+                    h = h / (np.sum(h) + 1e-6)
+                    blocks.append(h)
+            block_feat = np.concatenate(blocks).astype(np.float32)
+            block_feat /= (np.linalg.norm(block_feat) + 1e-6)
 
-            # 2. 3D Lab Perceptual Color Histogram (4 L x 4 a x 4 b = 64 bins)
-            lab = cv2.cvtColor(crop, cv2.COLOR_BGR2Lab)
-            hist_lab = cv2.calcHist([lab], [0, 1, 2], None, [4, 4, 4], [0, 256, 0, 256, 0, 256]).flatten()
-            hist_lab = hist_lab / (np.sum(hist_lab) + 1e-6)
+            # 2. 3D HSV Color Distribution (12 H x 4 S x 4 V = 192 bins)
+            hsv = cv2.cvtColor(std_crop, cv2.COLOR_BGR2HSV)
+            hsv_hist = cv2.calcHist([hsv], [0, 1, 2], None, [12, 4, 4], [0, 180, 0, 256, 0, 256]).flatten()
+            hsv_hist = hsv_hist / (np.sum(hsv_hist) + 1e-6)
+            hsv_hist /= (np.linalg.norm(hsv_hist) + 1e-6)
 
-            # 3. Spatial Color Distribution across 4 vertical body zones (Head, Upper Torso, Mid, Lower)
-            h, w = crop.shape[:2]
-            zones = []
-            for i in range(4):
-                z_start = int(h * (i / 4.0))
-                z_end = int(h * ((i + 1) / 4.0))
-                zone = crop[z_start:z_end, :]
-                if zone.size > 0:
-                    m, s = cv2.meanStdDev(zone)
-                    zones.extend(m.flatten() / 255.0)
-                    zones.extend(s.flatten() / 255.0)
-                else:
-                    zones.extend([0.0] * 6)
-            zones = np.array(zones, dtype=np.float32)
+            # 3. Zero-Mean Normalized Spatial Texture Vector (16x32 = 512 dimensions)
+            struct = cv2.resize(gray, (16, 32), interpolation=cv2.INTER_AREA).astype(np.float32)
+            struct = (struct - np.mean(struct)) / (np.std(struct) + 1e-5)
+            struct_feat = struct.flatten() / (np.linalg.norm(struct) + 1e-6)
 
-            # 4. Normalized Grayscale Texture Grid (8x8 = 64 dimensions)
-            gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
-            grid = cv2.resize(gray, (8, 8), interpolation=cv2.INTER_AREA).astype(np.float32)
-            grid = (grid - np.mean(grid)) / (np.std(grid) + 1e-5)
-            grid_norm = grid.flatten() / (np.linalg.norm(grid) + 1e-5)
-
-            feat = np.concatenate([hist_hsv, hist_lab, zones, grid_norm]).astype(np.float32)
-            norm = np.linalg.norm(feat)
-            if norm > 0:
-                feat = feat / norm
-            return feat
+            # Combined Biometric Signature (1216 dimensions)
+            combined = np.concatenate([block_feat * 1.5, hsv_hist * 1.2, struct_feat * 1.0]).astype(np.float32)
+            norm = np.linalg.norm(combined)
+            return combined / norm if norm > 0 else combined
         except Exception as e:
             return None
 

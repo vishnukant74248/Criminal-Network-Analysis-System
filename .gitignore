@@ -72,6 +72,8 @@ sentinel/data/exports/*
 !sentinel/data/exports/.gitkeep
 alerts/
 reports/
+*.pdf
+*.pt
 
 # Allow VS Code shared tasks
 !.vscode/tasks.json

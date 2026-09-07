@@ -428,5 +428,25 @@
     "uploaded_by": "SYSTEM",
     "previous_hash": "0fc528ce657951042bcbfffcbcc41ca26f259f878ad25c43fcafe9e9aefea779",
     "block_hash": "694f025f46c9eac62562a2c732f43547d3c11f4785659abcaaf6cb507a0a2251"
+  },
+  {
+    "index": 43,
+    "timestamp": "2026-09-07T12:52:35.352740",
+    "file_hash": "669940fc0bdf1b0568b125be909d939248a23c6a85ccc74b522d534679f92457",
+    "file_name": "face_match_report_FACE-B2321F20.pdf",
+    "file_type": ".pdf",
+    "uploaded_by": "Investigator (Badge #4092)",
+    "previous_hash": "694f025f46c9eac62562a2c732f43547d3c11f4785659abcaaf6cb507a0a2251",
+    "block_hash": "60ecdd3f1d84fa550914bd747a74e39b1025d3d8c2327108c901f04e1f153504"
+  },
+  {
+    "index": 44,
+    "timestamp": "2026-09-07T12:54:14.186488",
+    "file_hash": "669940fc0bdf1b0568b125be909d939248a23c6a85ccc74b522d534679f92457",
+    "file_name": "face_match_report_FACE-B2321F20.pdf",
+    "file_type": ".pdf",
+    "uploaded_by": "Investigator (Badge #4092)",
+    "previous_hash": "60ecdd3f1d84fa550914bd747a74e39b1025d3d8c2327108c901f04e1f153504",
+    "block_hash": "8ebc232e9d2c225a13a6c64de2d93df76042032dd3f1fc5b9bce8ffd2a708930"
   }
 ]

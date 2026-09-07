@@ -1,4 +1,5 @@
-from agency_swarm import Agent
+import os
+from agency_swarm import Agent, ModelSettings
 from .tools.AnalyzeNetwork import AnalyzeNetwork
 from .tools.ComputeCentrality import ComputeCentrality
 from .tools.DetectCommunities import DetectCommunities
@@ -12,8 +13,7 @@ class NetworkAnalystAgent(Agent):
                 "centrality metrics, detects communities, identifies key nodes, "
                 "and traces relationships in the criminal network graph."
             ),
-            instructions="./instructions.md",
+            instructions=os.path.join(os.path.dirname(__file__), "instructions.md"),
             tools=[AnalyzeNetwork, ComputeCentrality, DetectCommunities],
-            temperature=0.2,
-            max_prompt_tokens=20000,
+            model_settings=ModelSettings(temperature=0.2, max_tokens=20000),
         )

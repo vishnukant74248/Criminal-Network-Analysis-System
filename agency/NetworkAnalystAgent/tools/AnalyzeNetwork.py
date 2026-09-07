@@ -5,8 +5,10 @@ import json
 import sys
 import os
 
-# Allow importing from backend
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../../../sentinel/backend"))
+# Allow importing from backend if available
+backend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../sentinel/backend"))
+if os.path.exists(backend_path) and backend_path not in sys.path:
+    sys.path.insert(0, backend_path)
 
 class AnalyzeNetwork(BaseTool):
     """

@@ -1,4 +1,5 @@
-from agency_swarm import Agent
+import os
+from agency_swarm import Agent, ModelSettings
 from .tools.ScoreThreat import ScoreThreat
 from .tools.GenerateAlert import GenerateAlert
 from .tools.TrackEscalation import TrackEscalation
@@ -12,8 +13,7 @@ class ThreatScoringAgent(Agent):
                 "threat scores (0–100) for persons, groups, and locations, "
                 "classifies threat levels, and triggers CRITICAL alerts."
             ),
-            instructions="./instructions.md",
+            instructions=os.path.join(os.path.dirname(__file__), "instructions.md"),
             tools=[ScoreThreat, GenerateAlert, TrackEscalation],
-            temperature=0.2,
-            max_prompt_tokens=20000,
+            model_settings=ModelSettings(temperature=0.2, max_tokens=20000),
         )

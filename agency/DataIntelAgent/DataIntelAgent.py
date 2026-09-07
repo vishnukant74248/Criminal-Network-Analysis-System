@@ -1,4 +1,5 @@
-from agency_swarm import Agent
+import os
+from agency_swarm import Agent, ModelSettings
 from .tools.QueryDatabase import QueryDatabase
 from .tools.IngestData import IngestData
 from .tools.ExtractEntities import ExtractEntities
@@ -12,8 +13,7 @@ class DataIntelAgent(Agent):
                 "extraction. Fetches and structures raw criminal intelligence "
                 "data for other agents to consume."
             ),
-            instructions="./instructions.md",
+            instructions=os.path.join(os.path.dirname(__file__), "instructions.md"),
             tools=[QueryDatabase, IngestData, ExtractEntities],
-            temperature=0.1,
-            max_prompt_tokens=20000,
+            model_settings=ModelSettings(temperature=0.1, max_tokens=20000),
         )

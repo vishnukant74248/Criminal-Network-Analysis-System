@@ -1,4 +1,5 @@
-from agency_swarm import Agent
+import os
+from agency_swarm import Agent, ModelSettings
 from .tools.GenerateReport import GenerateReport
 from .tools.ExportReport import ExportReport
 
@@ -11,8 +12,7 @@ class ReportAgent(Agent):
                 "summaries. Compiles findings from all agents into structured, "
                 "human-readable reports with timelines and recommendations."
             ),
-            instructions="./instructions.md",
+            instructions=os.path.join(os.path.dirname(__file__), "instructions.md"),
             tools=[GenerateReport, ExportReport],
-            temperature=0.4,
-            max_prompt_tokens=20000,
+            model_settings=ModelSettings(temperature=0.4, max_tokens=20000),
         )

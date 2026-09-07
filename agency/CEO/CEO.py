@@ -1,4 +1,5 @@
-from agency_swarm import Agent
+import os
+from agency_swarm import Agent, ModelSettings
 
 class CEO(Agent):
     def __init__(self):
@@ -11,8 +12,7 @@ class CEO(Agent):
                 "specialist sub-agents: NetworkAnalystAgent, DataIntelAgent, "
                 "ThreatScoringAgent, and ReportAgent."
             ),
-            instructions="./instructions.md",
+            instructions=os.path.join(os.path.dirname(__file__), "instructions.md"),
             tools=[],
-            temperature=0.3,
-            max_prompt_tokens=25000,
+            model_settings=ModelSettings(temperature=0.3, max_tokens=25000),
         )

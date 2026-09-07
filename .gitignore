@@ -68,7 +68,12 @@ sentinel/data/uploads/*
 sentinel/backend/data/uploads/*
 !sentinel/data/uploads/.gitkeep
 !sentinel/backend/data/uploads/.gitkeep
+sentinel/data/exports/*
+!sentinel/data/exports/.gitkeep
+alerts/
+reports/
 
 # Allow VS Code shared tasks
 !.vscode/tasks.json
+
 

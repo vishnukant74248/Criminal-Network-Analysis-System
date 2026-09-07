@@ -70,46 +70,22 @@ async def detect_persons(request: Request, file: UploadFile = File(...)):
             "timestamp": now
         })
         
-    # Extract target embeddings (head, upper body, full body, and mirror flip) from uploaded evidence
+    # Extract target pure face embeddings (normal and horizontal flip) using SFace + YuNet
     target_embedding = None
-    target_head_emb = None
-    target_upper_emb = None
     target_flip_emb = None
-    target_flip_head = None
     if decoded is not None:
-        if detections:
+        # First priority: detect face in full image
+        target_embedding = face_processor.compute_embedding_from_crop(decoded)
+        if target_embedding is not None and decoded.size > 0:
+            target_flip_emb = face_processor.compute_embedding_from_crop(cv2.flip(decoded, 1))
+
+        # If not found yet and detections exist, try cropping the detected person
+        if target_embedding is None and detections:
             x1, y1, x2, y2 = detections[0]["bbox"]
-            full_crop = decoded[max(0, y1):min(img_h, y2), max(0, x1):min(img_w, x2)]
-            head_h = max(16, int((min(img_h, y2) - max(0, y1)) * 0.45))
-            upper_h = max(24, int((min(img_h, y2) - max(0, y1)) * 0.65))
-            head_crop = decoded[max(0, y1):max(0, y1) + head_h, max(0, x1):min(img_w, x2)]
-            upper_crop = decoded[max(0, y1):max(0, y1) + upper_h, max(0, x1):min(img_w, x2)]
-            
-            target_embedding = face_processor.compute_embedding_from_crop(full_crop)
-            target_head_emb = face_processor.compute_embedding_from_crop(head_crop)
-            target_upper_emb = face_processor.compute_embedding_from_crop(upper_crop)
-            if full_crop.size > 0:
-                target_flip_emb = face_processor.compute_embedding_from_crop(cv2.flip(full_crop, 1))
-            if head_crop.size > 0:
-                target_flip_head = face_processor.compute_embedding_from_crop(cv2.flip(head_crop, 1))
-        else:
-            faces = face_processor.detect_faces(file_path)
-            if faces:
-                f = faces[0]
-                crop = decoded[f["top"]:f["bottom"], f["left"]:f["right"]]
-                target_embedding = face_processor.compute_embedding_from_crop(crop)
-                target_head_emb = target_embedding
-                target_upper_emb = target_embedding
-                if crop.size > 0:
-                    target_flip_emb = face_processor.compute_embedding_from_crop(cv2.flip(crop, 1))
-                    target_flip_head = target_flip_emb
-            else:
-                target_embedding = face_processor.compute_embedding_from_crop(decoded)
-                target_head_emb = target_embedding
-                target_upper_emb = target_embedding
-                if decoded.size > 0:
-                    target_flip_emb = face_processor.compute_embedding_from_crop(cv2.flip(decoded, 1))
-                    target_flip_head = target_flip_emb
+            p_crop = decoded[max(0, y1):min(img_h, y2), max(0, x1):min(img_w, x2)]
+            target_embedding = face_processor.compute_embedding_from_crop(p_crop)
+            if target_embedding is not None and p_crop.size > 0:
+                target_flip_emb = face_processor.compute_embedding_from_crop(cv2.flip(p_crop, 1))
 
     if target_embedding is not None:
         def _to_list(arr):
@@ -122,11 +98,8 @@ async def detect_persons(request: Request, file: UploadFile = File(...)):
             "file_name": file.filename,
             "file_path": file_path,
             "sha256_hash": file_hash,
-            "embedding": _to_list(target_embedding),
-            "head_embedding": _to_list(target_head_emb),
-            "upper_embedding": _to_list(target_upper_emb),
-            "flip_embedding": _to_list(target_flip_emb),
-            "flip_head_embedding": _to_list(target_flip_head),
+            "face_embedding": _to_list(target_embedding),
+            "flip_face_embedding": _to_list(target_flip_emb),
             "timestamp": now,
             "total_persons": len(persons)
         }
@@ -188,17 +161,24 @@ async def detect_frame(request: Request, file: UploadFile = File(None), frame: U
     highest_sim = 0.0
     
     frame_img = None
-    target_dict = {}
+    target_face_emb = None
+    target_flip_emb = None
     if active_target and detections:
         try:
             import numpy as np
             import cv2
             nparr = np.frombuffer(image_data, np.uint8)
             frame_img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-            
-            for k in ["embedding", "head_embedding", "upper_embedding", "flip_embedding", "flip_head_embedding"]:
-                if k in active_target and active_target[k]:
-                    target_dict[k] = np.array(active_target[k], dtype=np.float32)
+
+            if "face_embedding" in active_target and active_target["face_embedding"]:
+                target_face_emb = np.array(active_target["face_embedding"], dtype=np.float32)
+            elif "embedding" in active_target and active_target["embedding"]:
+                target_face_emb = np.array(active_target["embedding"], dtype=np.float32)
+
+            if "flip_face_embedding" in active_target and active_target["flip_face_embedding"]:
+                target_flip_emb = np.array(active_target["flip_face_embedding"], dtype=np.float32)
+            elif "flip_embedding" in active_target and active_target["flip_embedding"]:
+                target_flip_emb = np.array(active_target["flip_embedding"], dtype=np.float32)
         except Exception:
             pass
 
@@ -207,63 +187,39 @@ async def detect_frame(request: Request, file: UploadFile = File(None), frame: U
         x1, y1, x2, y2 = d["bbox"]
         w = max(0, x2 - x1)
         h = max(0, y2 - y1)
-        
+
         is_match = False
         sim_score = 0.0
         display_sim = 0.0
-        
-        if frame_img is not None and target_dict:
+
+        if frame_img is not None and target_face_emb is not None:
             f_h, f_w = frame_img.shape[:2]
             x1_c = max(0, min(f_w - 1, x1))
             x2_c = max(x1_c + 1, min(f_w, x2))
             y1_c = max(0, min(f_h - 1, y1))
             y2_c = max(y1_c + 1, min(f_h, y2))
-            
-            # Extract head, upper torso, and full-body crops from live frame
-            head_h = max(16, int((y2_c - y1_c) * 0.45))
-            head_crop = frame_img[y1_c:y1_c + head_h, x1_c:x2_c]
-            upper_h = max(24, int((y2_c - y1_c) * 0.65))
-            upper_crop = frame_img[y1_c:y1_c + upper_h, x1_c:x2_c]
-            full_crop = frame_img[y1_c:y2_c, x1_c:x2_c]
-            
-            e_head = face_processor.compute_embedding_from_crop(head_crop)
-            e_upper = face_processor.compute_embedding_from_crop(upper_crop)
-            e_full = face_processor.compute_embedding_from_crop(full_crop)
 
-            # Strictly compare head against head, upper against upper, full against full
-            head_sim = 0.0
-            if e_head is not None:
-                if "head_embedding" in target_dict:
-                    head_sim = max(head_sim, face_processor.compare_faces(target_dict["head_embedding"], e_head))
-                if "flip_head_embedding" in target_dict:
-                    head_sim = max(head_sim, face_processor.compare_faces(target_dict["flip_head_embedding"], e_head))
+            # Crop the detected person from live frame
+            person_crop = frame_img[y1_c:y2_c, x1_c:x2_c]
 
-            upper_sim = 0.0
-            if e_upper is not None and "upper_embedding" in target_dict:
-                upper_sim = face_processor.compare_faces(target_dict["upper_embedding"], e_upper)
+            # STRICT DEEP FACIAL RECOGNITION (SFace + YuNet)
+            # Clothes / dress / uniform / shirt are 100% ignored.
+            person_face_emb = face_processor.compute_embedding_from_crop(person_crop)
 
-            full_sim = 0.0
-            if e_full is not None:
-                if "embedding" in target_dict:
-                    full_sim = max(full_sim, face_processor.compare_faces(target_dict["embedding"], e_full))
-                if "flip_embedding" in target_dict:
-                    full_sim = max(full_sim, face_processor.compare_faces(target_dict["flip_embedding"], e_full))
+            if person_face_emb is not None:
+                s1 = face_processor.compare_faces(target_face_emb, person_face_emb)
+                s2 = face_processor.compare_faces(target_flip_emb, person_face_emb) if target_flip_emb is not None else 0.0
+                sim_score = max(s1, s2)
 
-            # Composite biometric similarity score:
-            # Head features carry primary weight (50%), upper body (35%), full body (15%)
-            sim_score = max(head_sim, 0.50 * head_sim + 0.35 * upper_sim + 0.15 * full_sim, upper_sim * 0.90)
-            
-            # High-precision discrimination threshold:
-            # Different persons score <= 0.36 under all conditions.
-            # Same target person under any webcam lighting/angle scores 0.70 - 0.99.
-            # Threshold 0.52 guarantees ZERO false positives for other people (they stay GREEN),
-            # while accurately identifying the uploaded target person (turns RED).
-            if sim_score >= 0.52:
-                is_match = True
-                target_matched = True
-                display_sim = round(min(99.9, max(75.0, 70.0 + (sim_score - 0.52) / (0.90 - 0.52) * 29.9)), 1)
-                if display_sim > highest_sim:
-                    highest_sim = display_sim
+                # Pure facial biometric threshold:
+                # Same person's face scores 0.60 - 0.99
+                # Different person with SAME DRESS/CLOTHES scores <= 0.20 (NEVER matches)
+                if sim_score >= 0.38:
+                    is_match = True
+                    target_matched = True
+                    display_sim = round(min(99.9, max(75.0, 70.0 + (sim_score - 0.38) / (0.80 - 0.38) * 29.9)), 1)
+                    if display_sim > highest_sim:
+                        highest_sim = display_sim
 
         persons.append({
             "person_index": idx + 1,

@@ -7,24 +7,59 @@ from typing import List, Dict, Optional
 from PIL import Image
 
 try:
+    import onnxruntime as ort
+    ort.set_default_logger_severity(3)
+    ORT_AVAILABLE = True
+except ImportError:
+    ORT_AVAILABLE = False
+
+try:
     import face_recognition
     FACE_REC_AVAILABLE = True
 except ImportError:
     FACE_REC_AVAILABLE = False
-    print("WARNING: face_recognition library not available. Falling back to Haar Cascades (no embeddings).")
+
+MODELS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "models"))
+YUNET_PATH = os.path.join(MODELS_DIR, "face_detection_yunet.onnx")
+SFACE_PATH = os.path.join(MODELS_DIR, "face_recognition_sface.onnx")
 
 class FaceProcessor:
     def __init__(self):
-        self.haar_cascade = None
-        if not FACE_REC_AVAILABLE:
+        self.yunet_detector = None
+        self.sface_session = None
+        self.ref_landmarks = np.array([
+            [38.2946, 51.6963],
+            [73.5318, 51.5014],
+            [56.0252, 71.7366],
+            [41.5493, 92.3655],
+            [70.7299, 92.2041]
+        ], dtype=np.float32)
+
+        if os.path.exists(YUNET_PATH):
             try:
-                data_attr = getattr(cv2, 'data', None)
-                cascade_path = (data_attr.haarcascades if data_attr else '') + 'haarcascade_frontalface_default.xml'
-                if hasattr(cv2, 'CascadeClassifier'):
-                    self.haar_cascade = cv2.CascadeClassifier(cascade_path)
+                self.yunet_detector = cv2.FaceDetectorYN_create(
+                    YUNET_PATH, "", (320, 320),
+                    score_threshold=0.30,
+                    nms_threshold=0.25,
+                    top_k=5000
+                )
             except Exception as e:
-                print(f"Notice: CascadeClassifier fallback not loaded: {e}")
-                self.haar_cascade = None
+                print(f"Notice: YuNet initialization warning: {e}")
+                self.yunet_detector = None
+
+        if ORT_AVAILABLE and os.path.exists(SFACE_PATH):
+            try:
+                opts = ort.SessionOptions()
+                opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+                opts.intra_op_num_threads = 2
+                self.sface_session = ort.InferenceSession(
+                    SFACE_PATH,
+                    sess_options=opts,
+                    providers=["CPUExecutionProvider"]
+                )
+            except Exception as e:
+                print(f"Notice: SFace ORT initialization warning: {e}")
+                self.sface_session = None
 
     def detect_faces(self, image_path: str) -> List[Dict[str, int]]:
         """Detect faces and return bounding boxes in format: top, right, bottom, left."""
@@ -34,23 +69,35 @@ class FaceProcessor:
                 face_locations = face_recognition.face_locations(image)
                 if face_locations:
                     return [{"top": top, "right": right, "bottom": bottom, "left": left} for (top, right, bottom, left) in face_locations]
-            except Exception as e:
-                print(f"Notice: face_recognition detection error ({e}), falling back to OpenCV")
+            except Exception:
+                pass
 
         image = cv2.imread(image_path)
         if image is None:
             return []
         h, w = image.shape[:2]
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        
-        detected = []
-        if self.haar_cascade is not None:
-            faces = self.haar_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=4, minSize=(30, 30))
-            for (x, y, fw, fh) in faces:
-                detected.append({"top": int(y), "right": int(x + fw), "bottom": int(y + fh), "left": int(x)})
 
-        # Fallback: if no face found but image is portrait/mugshot, provide centered face box
-        if not detected and h > 0 and w > 0:
+        if self.yunet_detector is not None:
+            try:
+                self.yunet_detector.setInputSize((w, h))
+                _, faces = self.yunet_detector.detect(image)
+                if faces is not None and len(faces) > 0:
+                    detected = []
+                    for f in faces:
+                        fx, fy, fw, fh = f[0:4].astype(int)
+                        detected.append({
+                            "top": max(0, int(fy)),
+                            "right": min(w, int(fx + fw)),
+                            "bottom": min(h, int(fy + fh)),
+                            "left": max(0, int(fx))
+                        })
+                    return detected
+            except Exception as e:
+                print(f"Notice: YuNet detection error: {e}")
+
+        # Fallback: if no face found, provide centered face box
+        detected = []
+        if h > 0 and w > 0:
             pad_h = int(h * 0.15)
             pad_w = int(w * 0.20)
             detected.append({
@@ -62,124 +109,111 @@ class FaceProcessor:
 
         return detected
 
-    def compute_embedding(self, image_path: str, face_location: Dict[str, int]) -> Optional[np.ndarray]:
-        """Compute 128-d face embedding for a specific face location."""
-        if FACE_REC_AVAILABLE:
+    def align_face(self, img_bgr: np.ndarray) -> Optional[np.ndarray]:
+        """
+        Detect facial landmarks and align face strictly to 112x112 pure facial coordinates.
+        Completely excludes clothes, dress, torso, and background.
+        """
+        if img_bgr is None or not hasattr(img_bgr, "shape") or img_bgr.size == 0:
+            return None
+        h, w = img_bgr.shape[:2]
+        if h < 8 or w < 8:
+            return None
+
+        # Try YuNet 5-point landmark detection
+        if self.yunet_detector is not None:
             try:
-                image = face_recognition.load_image_file(image_path)
-                loc_tuple = (face_location["top"], face_location["right"], face_location["bottom"], face_location["left"])
-                encodings = face_recognition.face_encodings(image, known_face_locations=[loc_tuple])
-                if encodings:
-                    return encodings[0]
-            except Exception as e:
-                print(f"Notice: face_recognition encoding error ({e}), using OpenCV descriptor fallback")
-
-        # Robust 128-d normalized visual feature descriptor fallback
-        try:
-            image = cv2.imread(image_path)
-            if image is None:
-                return None
-            h, w = image.shape[:2]
-            top = max(0, min(h - 1, face_location["top"]))
-            bottom = max(top + 1, min(h, face_location["bottom"]))
-            left = max(0, min(w - 1, face_location["left"]))
-            right = max(left + 1, min(w, face_location["right"]))
-
-            crop = image[top:bottom, left:right]
-            if crop.size == 0:
-                return None
-            gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
-            # Resize to 16x8 spatial grid -> 128 dimensions
-            resized = cv2.resize(gray, (16, 8), interpolation=cv2.INTER_AREA).astype(np.float32)
-            vector = resized.flatten()
-            norm = np.linalg.norm(vector)
-            if norm > 0:
-                vector = vector / norm
-            return vector
-        except Exception as e:
-            print(f"Embedding computation error: {e}")
-            return None
-
-    def compute_embedding_from_crop(self, crop: np.ndarray) -> Optional[np.ndarray]:
-        """Compute visual descriptor embedding directly from an in-memory image crop (BGR numpy array)."""
-        if crop is None or not hasattr(crop, 'size') or crop.size == 0:
-            return None
-        try:
-            if FACE_REC_AVAILABLE:
-                rgb = cv2.cvtColor(crop, cv2.COLOR_BGR2RGB)
-                encodings = face_recognition.face_encodings(rgb)
-                if encodings:
-                    return encodings[0]
-        except Exception:
-            pass
-
-        try:
-            # Standardize crop to 64x128 for normalized biometric feature extraction
-            std_crop = cv2.resize(crop, (64, 128), interpolation=cv2.INTER_AREA)
-            
-            # Illumination normalization: apply Contrast Limited Adaptive Histogram Equalization (CLAHE)
-            # to the luminance channel so shadows, webcam auto-exposure, and room lighting shifts
-            # do not degrade biometric matching accuracy.
-            ycrcb = cv2.cvtColor(std_crop, cv2.COLOR_BGR2YCrCb)
-            clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-            ycrcb[:, :, 0] = clahe.apply(ycrcb[:, :, 0])
-            norm_bgr = cv2.cvtColor(ycrcb, cv2.COLOR_YCrCb2BGR)
-            gray = cv2.cvtColor(norm_bgr, cv2.COLOR_BGR2GRAY)
-
-            # 1. Spatial Block Contrast Histograms (32 spatial blocks, 16 bins = 512 dimensions)
-            # Discriminates facial features, skin tone, hairstyle, and upper-body contours
-            bh, bw = 16, 16
-            blocks = []
-            for y in range(0, 128, bh):
-                for x in range(0, 64, bw):
-                    blk = gray[y:y+bh, x:x+bw]
-                    h = cv2.calcHist([blk], [0], None, [16], [0, 256]).flatten()
-                    h = h / (np.sum(h) + 1e-6)
-                    blocks.append(h)
-            block_feat = np.concatenate(blocks).astype(np.float32)
-            block_feat /= (np.linalg.norm(block_feat) + 1e-6)
-
-            # 2. 2D Hue-Saturation Chrominance Distribution (16 H x 8 S = 128 bins)
-            # Invariant to overall illumination brightness V, purely captures skin and clothing chrominance
-            hsv = cv2.cvtColor(norm_bgr, cv2.COLOR_BGR2HSV)
-            hs_hist = cv2.calcHist([hsv], [0, 1], None, [16, 8], [0, 180, 0, 256]).flatten()
-            hs_hist = hs_hist / (np.sum(hs_hist) + 1e-6)
-            hs_hist /= (np.linalg.norm(hs_hist) + 1e-6)
-
-            # 3. Structural Edge Gradients (Sobel magnitude - 16x32 = 512 dimensions)
-            # Invariant to linear illumination shifts, captures facial contour geometry & silhouette
-            gx = cv2.Sobel(gray, cv2.CV_32F, 1, 0, ksize=3)
-            gy = cv2.Sobel(gray, cv2.CV_32F, 0, 1, ksize=3)
-            mag, _ = cv2.cartToPolar(gx, gy)
-            mag_resized = cv2.resize(mag, (16, 32), interpolation=cv2.INTER_AREA).flatten()
-            mag_feat = mag_resized / (np.linalg.norm(mag_resized) + 1e-6)
-
-            # 4. Zero-Mean Normalized Spatial Texture Vector (16x32 = 512 dimensions)
-            struct = cv2.resize(gray, (16, 32), interpolation=cv2.INTER_AREA).astype(np.float32)
-            struct = (struct - np.mean(struct)) / (np.std(struct) + 1e-5)
-            struct_feat = struct.flatten() / (np.linalg.norm(struct) + 1e-6)
-
-            # Combined Biometric Signature (1664 dimensions)
-            combined = np.concatenate([block_feat * 1.2, hs_hist * 1.5, mag_feat * 1.0, struct_feat * 1.0]).astype(np.float32)
-            norm = np.linalg.norm(combined)
-            return combined / norm if norm > 0 else combined
-        except Exception as e:
-            return None
-
-    def compare_faces(self, known_embedding: np.ndarray, target_embedding: np.ndarray) -> float:
-        """Compare two embeddings and return similarity score (0.0 - 1.0)."""
-        if FACE_REC_AVAILABLE and hasattr(known_embedding, 'shape') and known_embedding.shape == (128,):
-            try:
-                distance = face_recognition.face_distance([known_embedding], target_embedding)[0]
-                return float(max(0.0, 1.0 - distance))
+                self.yunet_detector.setInputSize((w, h))
+                _, faces = self.yunet_detector.detect(img_bgr)
+                if faces is not None and len(faces) > 0:
+                    best_face = max(faces, key=lambda f: f[-1])
+                    landmarks = best_face[4:14].reshape((5, 2))
+                    tfm, _ = cv2.estimateAffinePartial2D(landmarks, self.ref_landmarks)
+                    if tfm is not None:
+                        aligned = cv2.warpAffine(img_bgr, tfm, (112, 112))
+                        return aligned
+                    else:
+                        fx, fy, fw, fh = best_face[0:4].astype(int)
+                        crop = img_bgr[max(0, fy):min(h, fy + fh), max(0, fx):min(w, fx + fw)]
+                        if crop.size > 0:
+                            return cv2.resize(crop, (112, 112))
             except Exception:
                 pass
 
-        # Normalized cosine similarity fallback
+        # Fallback for face/head crop: take upper 45% (pure head/face, never clothes)
+        head_h = max(8, int(h * 0.45))
+        head_crop = img_bgr[0:head_h, :]
+        if head_crop.size > 0:
+            return cv2.resize(head_crop, (112, 112))
+        return cv2.resize(img_bgr, (112, 112))
+
+    def compute_embedding(self, image_path: str, face_location: Dict[str, int]) -> Optional[np.ndarray]:
+        """Compute 128-d face embedding for a specific face location."""
+        image = cv2.imread(image_path)
+        if image is None:
+            return None
+        h, w = image.shape[:2]
+        top = max(0, min(h - 1, face_location["top"]))
+        bottom = max(top + 1, min(h, face_location["bottom"]))
+        left = max(0, min(w - 1, face_location["left"]))
+        right = max(left + 1, min(w, face_location["right"]))
+
+        crop = image[top:bottom, left:right]
+        return self.compute_embedding_from_crop(crop)
+
+    def compute_embedding_from_crop(self, crop: np.ndarray) -> Optional[np.ndarray]:
+        """
+        Extract 128-dimensional deep metric face embedding using SFace.
+        Strictly analyzes facial biometrics (eyes, nose, mouth, contours).
+        Completely ignores clothing, dress, shirt, or torso.
+        """
+        if crop is None or not hasattr(crop, "size") or crop.size == 0:
+            return None
+
+        aligned_face = self.align_face(crop)
+        if aligned_face is None or aligned_face.size == 0:
+            return None
+
+        if self.sface_session is not None:
+            try:
+                # SFace input format: (1, 3, 112, 112), float32, BGR
+                blob = aligned_face.astype(np.float32)
+                blob = np.transpose(blob, (2, 0, 1))
+                blob = np.expand_dims(blob, axis=0)
+
+                input_name = self.sface_session.get_inputs()[0].name
+                output_name = self.sface_session.get_outputs()[0].name
+                emb = self.sface_session.run([output_name], {input_name: blob})[0][0]
+
+                # L2 normalize
+                norm = np.linalg.norm(emb)
+                if norm > 0:
+                    emb = emb / norm
+                return emb
+            except Exception as e:
+                print(f"Notice: SFace inference error: {e}")
+
+        # Grayscale normalized 128-d fallback
+        try:
+            gray = cv2.cvtColor(aligned_face, cv2.COLOR_BGR2GRAY)
+            resized = cv2.resize(gray, (16, 8), interpolation=cv2.INTER_AREA).astype(np.float32)
+            vector = resized.flatten()
+            norm = np.linalg.norm(vector)
+            return vector / norm if norm > 0 else vector
+        except Exception:
+            return None
+
+    def compare_faces(self, known_embedding: np.ndarray, target_embedding: np.ndarray) -> float:
+        """
+        Pure cosine similarity comparison between two 128-d facial embeddings.
+        Returns similarity score in range [0.0, 1.0].
+        """
+        if known_embedding is None or target_embedding is None:
+            return 0.0
         try:
             k = np.asarray(known_embedding, dtype=np.float32).flatten()
             t = np.asarray(target_embedding, dtype=np.float32).flatten()
-            if len(k) != len(t):
+            if len(k) != len(t) or len(k) == 0:
                 return 0.0
             norm_k = np.linalg.norm(k)
             norm_t = np.linalg.norm(t)

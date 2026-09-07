@@ -434,7 +434,12 @@ export const PersonTracker: React.FC = () => {
           if (alertTimerRef.current) clearTimeout(alertTimerRef.current);
           alertTimerRef.current = window.setTimeout(() => {
             setTargetAlert(prev => prev ? { ...prev, active: false } : null);
-          }, 4000);
+          }, 1500);
+        } else {
+          // If the target person is NOT in frame (e.g. another person or nobody), immediately silence & clear alert
+          if (targetAlert?.active) {
+            setTargetAlert(null);
+          }
         }
 
       } catch (err) {

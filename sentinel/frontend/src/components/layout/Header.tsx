@@ -89,9 +89,6 @@ export const Header: React.FC<HeaderProps> = ({ onAlertClick }) => {
                 BLOCKCHAIN & CYBERSECURITY
               </span>
             </div>
-            <p className="text-[10px] text-slate-500 font-mono uppercase tracking-wider font-semibold">
-              MINISTRY OF HOME AFFAIRS • NCRB (WOMEN SAFETY DIVISION)
-            </p>
           </div>
         </div>
 

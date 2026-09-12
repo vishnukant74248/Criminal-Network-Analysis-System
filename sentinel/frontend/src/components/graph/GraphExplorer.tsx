@@ -39,7 +39,8 @@ export const GraphExplorer: React.FC = () => {
     Organization: true,
     Vehicle: true,
     Incident: true,
-    CellTower: true
+    CellTower: true,
+    Evidence: true
   });
   const [sourcePathId, setSourcePathId] = useState('');
   const [targetPathId, setTargetPathId] = useState('');
@@ -105,6 +106,10 @@ export const GraphExplorer: React.FC = () => {
           selector: 'node[node_type = "CellTower"]',
           style: { 'shape': 'octagon', 'background-color': '#38bdf8' }
         },
+        {
+          selector: 'node[node_type = "Evidence"]',
+          style: { 'shape': 'round-rectangle', 'background-color': '#0284c7', 'border-color': '#0369a1', 'border-width': 2.5 }
+        },
         // Edges
         {
           selector: 'edge',
@@ -137,6 +142,10 @@ export const GraphExplorer: React.FC = () => {
         {
           selector: 'edge[edge_type = "COMMANDS"]',
           style: { 'line-color': '#f43f5e', 'target-arrow-color': '#f43f5e', 'width': 2.5, 'opacity': 0.9 }
+        },
+        {
+          selector: 'edge[edge_type = "REPORTED_IN"]',
+          style: { 'line-color': '#0284c7', 'target-arrow-color': '#0284c7', 'line-style': 'dashed', 'width': 1.8, 'opacity': 0.85 }
         },
         // Selected / Highlighted Elements
         {

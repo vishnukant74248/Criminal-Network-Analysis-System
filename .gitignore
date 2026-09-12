@@ -13,10 +13,9 @@ develop-eggs/
 dist/
 downloads/
 eggs/
-.eggs/
-lib/
-lib64/
-parts/
+/lib/
+/lib64/
+!**/src/lib/**
 sdist/
 var/
 wheels/
@@ -70,6 +69,8 @@ sentinel/backend/data/uploads/*
 !sentinel/backend/data/uploads/.gitkeep
 sentinel/data/exports/*
 !sentinel/data/exports/.gitkeep
+sentinel/backend/data/person_captures/*
+!sentinel/backend/data/person_captures/.gitkeep
 alerts/
 reports/
 *.pdf

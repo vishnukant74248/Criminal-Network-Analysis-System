@@ -468,5 +468,35 @@
     "uploaded_by": "Investigator (Badge #4092)",
     "previous_hash": "ba1680e6bb3e92178c85ec8d07a3d887d1683a257142d5e28c9cf0c2913352ca",
     "block_hash": "94b1b07d481ecd87165d736442d185095f590f6fd3babcf54eba0c4fb6598ca4"
+  },
+  {
+    "index": 47,
+    "timestamp": "2026-09-08T00:52:03.997474",
+    "file_hash": "1968fcc7891f01854d70a29d6f4a589eb529c13f1406ba2eabcf7f869f3ca5c0",
+    "file_name": "CAP-62117e4c.jpg",
+    "file_type": "image/jpeg",
+    "uploaded_by": "SYSTEM",
+    "previous_hash": "94b1b07d481ecd87165d736442d185095f590f6fd3babcf54eba0c4fb6598ca4",
+    "block_hash": "71ac90238ee7365de8bb3a37d323a57b648cbb929e792ba59c1664befb5ef6c6"
+  },
+  {
+    "index": 48,
+    "timestamp": "2026-09-12T13:28:32.476087",
+    "file_hash": "9b9cb473fabc2ec3cf10d8145fd034f6e51eadf639f647dbe489bf85e02171c2",
+    "file_name": "SPECIAL_REPORT_RAKESH.txt",
+    "file_type": ".txt",
+    "uploaded_by": "Investigator (Badge #4092)",
+    "previous_hash": "71ac90238ee7365de8bb3a37d323a57b648cbb929e792ba59c1664befb5ef6c6",
+    "block_hash": "9bb3b2505c5d47db5b0633746717aedd0e6f9ad112aada883b619c81b0360095"
+  },
+  {
+    "index": 49,
+    "timestamp": "2026-09-12T13:29:38.695763",
+    "file_hash": "9b9cb473fabc2ec3cf10d8145fd034f6e51eadf639f647dbe489bf85e02171c2",
+    "file_name": "SPECIAL_REPORT_RAKESH.txt",
+    "file_type": ".txt",
+    "uploaded_by": "Investigator (Badge #4092)",
+    "previous_hash": "9bb3b2505c5d47db5b0633746717aedd0e6f9ad112aada883b619c81b0360095",
+    "block_hash": "706868393a23bd373506e422cb14f11560ed4b781090150a50d4a7e6a4d8ad9b"
   }
 ]

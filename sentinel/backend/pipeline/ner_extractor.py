@@ -25,7 +25,7 @@ class IndianLawNER:
             'EMAIL': re.compile(r'\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b')
         }
 
-        # 2. Curated Indian names vocabulary
+        # 2. Curated Indian names vocabulary (first and last names)
         self.first_names = {
             "rajesh", "vikram", "anita", "ramesh", "suresh", "deepak", "farooq", "lakshmi",
             "sunita", "arun", "manoj", "sanjay", "pooja", "rahul", "amit", "ravi", "geeta",
@@ -34,7 +34,21 @@ class IndianLawNER:
             "mukesh", "satish", "harish", "dhirendra", "abhimanyu", "devendra", "chhotu",
             "sharma", "singh", "yadav", "patel", "tiwari", "ahmed", "narayan", "kumari",
             "joshi", "dubey", "mishra", "gupta", "verma", "shah", "shankar", "devi", "chauhan",
-            "kumar", "khan", "pandey", "ali", "das", "thakur", "jha", "singhania"
+            "kumar", "khan", "pandey", "ali", "das", "thakur", "jha", "singhania",
+            "akash", "aman", "anand", "ankit", "arvind", "ayush", "balram", "bharat",
+            "chandan", "dharmendra", "gaurav", "gopal", "harsh", "hemant", "jagdish",
+            "jitendra", "kailash", "kamal", "kishan", "karan", "krishna", "kuldeep",
+            "kunal", "lalit", "madhav", "manish", "mayank", "mithun", "mohit", "naresh",
+            "nitin", "pawan", "piyush", "prashant", "raghav", "rajan", "rajeev", "rakesh",
+            "ram", "rohan", "sachin", "sameer", "saurabh", "shashi", "shekhar", "shivam",
+            "shubham", "siddharth", "sohan", "sonu", "subhash", "sumit", "sunil", "surendra",
+            "suraj", "tarun", "umesh", "upendra", "varun", "vikas", "vishal", "vishnu",
+            "vivek", "yash", "agarwal", "bose", "chatterjee", "chaudhary", "choudhary",
+            "deshmukh", "dutta", "ghosh", "goswami", "iyer", "jadhav", "jain", "kapoor",
+            "kashyap", "kaur", "kulkarni", "mahajan", "malhotra", "meena", "mehta",
+            "menon", "modi", "mukherjee", "naidu", "nair", "pandit", "paswan", "pillai",
+            "prasad", "rai", "rajput", "rao", "rawat", "reddy", "roy", "saini", "saxena",
+            "sen", "seth", "shinde", "shukla", "srivastava", "swamy", "tripathi", "upadhyay"
         }
 
         # 3. Known locations & gangs
@@ -125,21 +139,28 @@ class IndianLawNER:
                     })
                     occupied_spans.append((s, e))
 
-        # 5. Name recognition heuristic (Capitalized 2-3 word sequences containing known Indian names)
-        # e.g., "Vikram Singh", "Deepak Tiwari", "Shri Ramesh Yadav", "Anita Devi"
-        name_regex = re.compile(r'\b(?:Shri|Smt|Late|Mohd|Md\.\s*)?([A-Z][a-z]{2,15}(?:\s+[A-Z][a-z]{2,15}){1,2})\b')
+        # 5. Name recognition heuristic (Capitalized 2-3 word sequences containing known Indian names or preceded by legal/suspect cues)
+        # e.g., "Vikram Singh", "Deepak Tiwari", "Shri Ramesh Yadav", "Anita Devi", "Accused: John Smith"
+        name_regex = re.compile(r'\b(?:Shri|Smt|Late|Mohd|Md\.|Mr\.|Mrs\.|Dr\.)?\s*([A-Z][a-z]{2,15}(?:\s+[A-Z][a-z]{2,15}){1,2})\b')
         for m in name_regex.finditer(text):
             s, e = m.start(), m.end()
             cand_name = m.group(1).strip()
             words = [w.lower() for w in cand_name.split()]
-            if any(w in self.first_names for w in words):
+            # Context window before the match (up to 40 chars)
+            pre_context = text[max(0, s-40):s].lower()
+            has_trigger = any(t in pre_context for t in [
+                'accused', 'suspect', 'alias', 's/o', 'w/o', 'd/o', 'son of', 'daughter of',
+                'wife of', 'brother of', 'apprehended', 'arrested', 'named', 'interrogated',
+                'complainant', 'witness', 'victim', 'kingpin', 'associate', 'criminal'
+            ])
+            if any(w in self.first_names for w in words) or has_trigger:
                 if not span_overlaps(s, e):
                     entities.append({
                         'text': cand_name,
                         'entity_type': 'PERSON',
                         'start': s,
                         'end': e,
-                        'confidence': 0.82
+                        'confidence': 0.90 if has_trigger else 0.82
                     })
                     occupied_spans.append((s, e))
 

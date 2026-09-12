@@ -46,6 +46,8 @@ def add_entities_to_graph(G: nx.MultiDiGraph, entities: List[Dict[str, Any]]) ->
 
         if G.has_node(node_id):
             G.nodes[node_id]['last_updated'] = 'Recent'
+            if isinstance(ent.get('metadata'), dict):
+                G.nodes[node_id].update(ent['metadata'])
             updated += 1
         else:
             attrs = {
@@ -59,12 +61,22 @@ def add_entities_to_graph(G: nx.MultiDiGraph, entities: List[Dict[str, Any]]) ->
             }
             if canonical_type == 'Person':
                 attrs['status'] = 'SUSPECT'
-                attrs['risk_score'] = 0.5
+                attrs['risk_score'] = 55
             elif canonical_type == 'Phone':
                 attrs['number'] = text
                 attrs['is_burner'] = False
+                attrs['risk_score'] = 45
             elif canonical_type == 'Vehicle':
                 attrs['registration_no'] = text
+                attrs['risk_score'] = 40
+            elif canonical_type == 'Evidence':
+                attrs['status'] = 'SEALED_EVIDENCE'
+                attrs['risk_score'] = 30
+            else:
+                attrs['risk_score'] = 35
+
+            if isinstance(ent.get('metadata'), dict):
+                attrs.update(ent['metadata'])
 
             G.add_node(node_id, **attrs)
             added += 1

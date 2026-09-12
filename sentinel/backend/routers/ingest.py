@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException, Request
+from fastapi import APIRouter, UploadFile, File, HTTPException, Request, Query
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 import os
@@ -56,11 +56,16 @@ def validate_file_payload(filename: str, contents: bytes) -> str:
     return file_ext
 
 @router.post('/upload')
-async def upload_file(request: Request, file: UploadFile = File(...)):
+async def upload_file(
+    request: Request,
+    file: UploadFile = File(...),
+    auto_commit: bool = Query(True, description="Automatically commit extracted entities and evidence node to live graph")
+):
     """
     Accepts raw evidence file (PDF, CSV, Excel, Image, TXT), validates magic bytes & size,
     calculates SHA-256 cryptographic seal, adds record to blockchain audit trail,
     and runs multi-modal extraction (OCR, NER, CDR, Financial, Faces).
+    Automatically commits extracted entities and relations to the live graph if auto_commit is True.
     """
     try:
         contents = await file.read()
@@ -91,6 +96,45 @@ async def upload_file(request: Request, file: UploadFile = File(...)):
         # 1. Run Indian NER pipeline on textual content
         entities = ner_engine.extract_entities(extracted_text)
         relations = ner_engine.extract_relations(extracted_text, entities)
+
+        # Structured JSON direct network or entities ingestion
+        if file_ext == '.json':
+            try:
+                import json
+                j_data = json.loads(contents.decode('utf-8', errors='ignore'))
+                if isinstance(j_data, dict):
+                    if 'nodes' in j_data and isinstance(j_data['nodes'], list):
+                        for n in j_data['nodes']:
+                            if isinstance(n, dict):
+                                lbl = n.get('label') or n.get('name') or n.get('id')
+                                ntype = n.get('node_type') or n.get('type') or 'Person'
+                                if lbl:
+                                    entities.append({
+                                        'text': str(lbl),
+                                        'entity_type': str(ntype).upper(),
+                                        'confidence': 0.99,
+                                        'matched_id': str(n.get('id', lbl)),
+                                        'metadata': n
+                                    })
+                    if 'edges' in j_data and isinstance(j_data['edges'], list):
+                        for edge in j_data['edges']:
+                            if isinstance(edge, dict) and edge.get('source') and edge.get('target'):
+                                relations.append({
+                                    'source': str(edge['source']),
+                                    'target': str(edge['target']),
+                                    'relation_type': edge.get('edge_type') or edge.get('type') or 'ASSOCIATED_WITH',
+                                    'confidence': 0.95
+                                })
+                    if 'entities' in j_data and isinstance(j_data['entities'], list):
+                        for e in j_data['entities']:
+                            if isinstance(e, dict) and 'text' in e:
+                                entities.append(e)
+                    if 'relations' in j_data and isinstance(j_data['relations'], list):
+                        for r in j_data['relations']:
+                            if isinstance(r, dict) and 'source' in r and 'target' in r:
+                                relations.append(r)
+            except Exception as json_err:
+                print(f"JSON parsing notice: {json_err}")
 
         # 2. Specialized tabular extraction for CSV & Excel (CDR & Financials)
         if file_ext in ('.csv', '.xlsx', '.xls'):
@@ -202,6 +246,53 @@ async def upload_file(request: Request, file: UploadFile = File(...)):
         cross_linker = CrossCaseLinker(graph_store)
         cross_case_alerts = cross_linker.scan_for_cross_case_links(deduped_entities)
 
+        # Create Evidence node representing this evidentiary document
+        file_evidence_id = f"DOC_{upload_id[:8]}"
+        file_evidence_node = {
+            'text': safe_filename,
+            'entity_type': 'EVIDENCE',
+            'matched_id': file_evidence_id,
+            'confidence': 1.0,
+            'source': 'SMART_INGESTION',
+            'metadata': {
+                'id': file_evidence_id,
+                'label': safe_filename,
+                'name': safe_filename,
+                'file_name': safe_filename,
+                'sha256_hash': sha256_hash,
+                'file_size': len(contents),
+                'file_type': file_ext,
+                'upload_id': upload_id,
+                'timestamp': datetime.now().isoformat(),
+                'node_type': 'Evidence',
+                'type': 'Evidence',
+                'status': 'VERIFIED_EVIDENCE',
+                'risk_score': 30
+            }
+        }
+
+        # Build provenance relations linking all extracted entities to this document
+        evidence_relations = []
+        for ent in deduped_entities:
+            evidence_relations.append({
+                'source': ent.get('text'),
+                'target': safe_filename,
+                'relation_type': 'REPORTED_IN',
+                'confidence': 0.95,
+                'source_text': f"Extracted from {safe_filename}"
+            })
+
+        all_entities_to_commit = [file_evidence_node] + deduped_entities
+        all_relations_to_commit = relations + evidence_relations
+
+        graph_summary = None
+        if auto_commit and graph_store and graph_store.graph is not None:
+            graph_summary = process_ingested_data(graph_store.graph, all_entities_to_commit, all_relations_to_commit)
+            if graph_store.graph.has_node(file_evidence_id):
+                graph_store.graph.nodes[file_evidence_id].update(file_evidence_node['metadata'])
+
+        final_status = 'COMMITTED_TO_GRAPH' if (auto_commit and graph_summary is not None) else 'EXTRACTED'
+
         # Log in SQLite database with real entity counts
         db = getattr(request.app.state, 'db', None)
         if db:
@@ -212,7 +303,7 @@ async def upload_file(request: Request, file: UploadFile = File(...)):
                 "file_size": len(contents),
                 "sha256_hash": sha256_hash,
                 "upload_timestamp": datetime.now().isoformat(),
-                "status": "SEALED",
+                "status": final_status,
                 "extracted_entities_count": len(deduped_entities)
             })
 
@@ -224,12 +315,13 @@ async def upload_file(request: Request, file: UploadFile = File(...)):
             'sha256_hash': sha256_hash,
             'file_size': len(contents),
             'extracted_text': extracted_text[:1500] + ('...' if len(extracted_text) > 1500 else ''),
-            'entities': deduped_entities,
-            'relations': relations,
+            'entities': all_entities_to_commit,
+            'relations': all_relations_to_commit,
             'categorized': categorized,
             'cross_case_links': cross_case_alerts,
             'timestamp': datetime.now().isoformat(),
-            'status': 'EXTRACTED'
+            'status': final_status,
+            'graph_summary': graph_summary
         }
 
         return {
@@ -241,6 +333,8 @@ async def upload_file(request: Request, file: UploadFile = File(...)):
             'blockchain_sealed': True,
             'entities_count': len(deduped_entities),
             'relations_count': len(relations),
+            'auto_committed': auto_commit and (graph_summary is not None),
+            'graph_summary': graph_summary,
             'summary': summary_counts,
             'categorized_entities': categorized,
             'cross_case_links': cross_case_alerts,
@@ -256,12 +350,12 @@ async def upload_file(request: Request, file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Failed to process evidence upload: {str(e)}")
 
 @router.post('/batch')
-async def batch_upload_files(request: Request, files: List[UploadFile] = File(...)):
+async def batch_upload_files(request: Request, files: List[UploadFile] = File(...), auto_commit: bool = Query(True)):
     """Auto-Feature 1: Batch Upload. Process multiple files simultaneously."""
     results = []
     for f in files:
         try:
-            r = await upload_file(request, f)
+            r = await upload_file(request, f, auto_commit=auto_commit)
             results.append(r)
         except Exception as ex:
             results.append({"file_name": f.filename, "status": "ERROR", "error": str(ex)})
@@ -486,11 +580,56 @@ async def auto_ingest_sample_test_pdf(request: Request, sample_type: str = "fir"
     entities = ner_engine.extract_entities(extracted_text)
     relations = ner_engine.extract_relations(extracted_text, entities)
 
+    # Create Evidence node & relations
+    file_evidence_id = f"DOC_{upload_id[:8]}"
+    file_evidence_node = {
+        'text': filename,
+        'entity_type': 'EVIDENCE',
+        'matched_id': file_evidence_id,
+        'confidence': 1.0,
+        'source': 'SMART_INGESTION',
+        'metadata': {
+            'id': file_evidence_id,
+            'label': filename,
+            'name': filename,
+            'file_name': filename,
+            'sha256_hash': sha256_hash,
+            'file_size': len(contents),
+            'file_type': '.pdf',
+            'upload_id': upload_id,
+            'timestamp': datetime.now().isoformat(),
+            'node_type': 'Evidence',
+            'type': 'Evidence',
+            'status': 'VERIFIED_EVIDENCE',
+            'risk_score': 30
+        }
+    }
+    evidence_relations = [{'source': ent.get('text'), 'target': filename, 'relation_type': 'REPORTED_IN', 'confidence': 0.95} for ent in entities]
+    all_entities = [file_evidence_node] + entities
+    all_relations = relations + evidence_relations
+
     # Commit to graph
     graph_store = getattr(request.app.state, 'graph_store', None)
     summary = {}
     if graph_store and graph_store.graph is not None:
-        summary = process_ingested_data(graph_store.graph, entities, relations)
+        summary = process_ingested_data(graph_store.graph, all_entities, all_relations)
+        if graph_store.graph.has_node(file_evidence_id):
+            graph_store.graph.nodes[file_evidence_id].update(file_evidence_node['metadata'])
+
+    # Populate preview cache
+    extraction_cache[upload_id] = {
+        'upload_id': upload_id,
+        'file_name': filename,
+        'file_path': save_path,
+        'sha256_hash': sha256_hash,
+        'file_size': len(contents),
+        'extracted_text': extracted_text[:1500] + ('...' if len(extracted_text) > 1500 else ''),
+        'entities': all_entities,
+        'relations': all_relations,
+        'timestamp': datetime.now().isoformat(),
+        'status': 'COMMITTED_TO_GRAPH',
+        'graph_summary': summary
+    }
 
     # Log in SQLite db
     db = getattr(request.app.state, 'db', None)
@@ -515,6 +654,7 @@ async def auto_ingest_sample_test_pdf(request: Request, sample_type: str = "fir"
         "entities": entities[:20],
         "relations_count": len(relations),
         "relations": relations[:15],
+        "auto_committed": True,
         "graph_summary": summary,
         "message": f"Successfully ingested {filename} into the criminal network graph."
     }
